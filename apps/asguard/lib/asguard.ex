@@ -14,10 +14,14 @@ defmodule Asguard do
   end
 
   def insert(raw, key, description, encryption_algo) do
+    encrypted = Encryption.encrypt(raw, key, encryption_algo)
+
     aesir =
-      raw
-      |> Encryption.encrypt(key, description, encryption_algo)
-      |> Aesir.from_params()
+      Aesir.from_params(%{
+        encrypted: encrypted,
+        encryption_algo: encryption_algo,
+        description: description
+      })
 
     GenServer.call(__MODULE__, {:insert, aesir})
   end
