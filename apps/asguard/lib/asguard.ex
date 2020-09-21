@@ -23,11 +23,20 @@ defmodule Asguard do
         description: description
       })
 
-    GenServer.call(__MODULE__, {:insert, aesir})
+    case GenServer.call(__MODULE__, {:insert, aesir}) do
+      nil -> {:error, :could_not_insert}
+      uuid -> {:ok, uuid}
+    end
   end
 
-  def get(uuid) do
-    GenServer.call(__MODULE__, {:get, uuid})
+  def get(uuid, key) do
+    case GenServer.call(__MODULE__, {:get, uuid}) do
+      nil ->
+        {:error, :not_found}
+
+      aesir ->
+        {:ok, Encryption.decrypt(aesir.encrypted, key, aesir.encryption_algo)}
+    end
   end
 
   # Server callbacks
@@ -37,14 +46,11 @@ defmodule Asguard do
 
   @impl true
   def handle_call({:insert, aesir}, _from, aesirs) do
-    {:reply, {:ok, aesir.uuid}, [aesir | aesirs]}
+    {:reply, aesir.uuid, [aesir | aesirs]}
   end
 
   @impl true
   def handle_call({:get, uuid}, _from, aesirs) do
-    case Enum.find(aesirs, &(&1.uuid == uuid)) do
-      nil -> {:reply, {:error, :not_found}, aesirs}
-      aesir -> {:reply, {:ok, aesir}, aesirs}
-    end
+    {:reply, Enum.find(aesirs, &(&1.uuid == uuid)), aesirs}
   end
 end
