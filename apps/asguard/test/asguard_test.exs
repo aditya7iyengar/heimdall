@@ -17,8 +17,8 @@ defmodule AsguardTest do
       assert is_binary(return_value)
 
       # Validate return_value is a UUID string
-      # {parse_status, _parsed_uuid} == UUID.info(return_value)
-      # assert parse_status == :ok
+      {parse_status, _parsed_uuid} = UUID.info(return_value)
+      assert parse_status == :ok
     end
   end
 
