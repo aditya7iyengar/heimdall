@@ -17,7 +17,7 @@ config :bifrost, BifrostWeb.Endpoint,
       "--mode",
       "development",
       "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
+      cd: Path.expand("../apps/bifrost/assets", __DIR__)
     ]
   ]
 

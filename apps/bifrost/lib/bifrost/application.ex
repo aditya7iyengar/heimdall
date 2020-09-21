@@ -12,9 +12,9 @@ defmodule Bifrost.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Bifrost.PubSub},
       # Start the Endpoint (http/https)
-      BifrostWeb.Endpoint
-      # Start a worker by calling: Bifrost.Worker.start_link(arg)
-      # {Bifrost.Worker, arg}
+      BifrostWeb.Endpoint,
+      # Start secure data store
+      Asguard
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
