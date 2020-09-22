@@ -19,29 +19,6 @@ defmodule BifrostWeb.AesirController do
     end
   end
 
-  def show(conn, %{"uuid" => uuid}) do
-    case Asguard.get_encrypted(uuid) do
-      {:ok, aesir} -> render(conn, "show.html", conn: conn, aesir: aesir)
-      {:error, :not_found} -> text(conn, "404 Not Found")
-    end
-  end
-
-  def decrypt(conn, %{"uuid" => uuid, "decrypt" => %{"key" => key}}) do
-    case Asguard.get(uuid, key) do
-      {:ok, decrypted, aesir} ->
-        render(
-          conn,
-          "show_decrypted.html",
-          conn: conn,
-          aesir: aesir,
-          decrypted: decrypted
-        )
-
-      {:error, :not_found} ->
-        text(conn, "404 Not Found")
-    end
-  end
-
   defp parse_aesir_args(aesir_params) do
     encryption_algo =
       aesir_params

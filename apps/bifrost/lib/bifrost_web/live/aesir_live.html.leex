@@ -1,0 +1,29 @@
+<%= case @result do %>
+  <% {:error, :not_found} -> %>
+    404 Not Found
+  <% {:ok, aesir} -> %>
+    <h4> Showing Secure Data </h2>
+
+    <form phx-submit="decrypt">
+      <input type="password" name="key" placeholder="Enter the key" autocomplete="off"/>
+      <input type="hidden" name="uuid" value="<%= aesir.uuid %>">
+    </form>
+
+    <blockquote>
+      <p><%= aesir.description %></p>
+      <br />
+      <em>Encrypted using: <%= aesir.encryption_algo %></em>
+    </blockquote>
+  <% {:ok, decrypted, aesir} -> %>
+    <h4> Showing Secure Data </h2>
+
+    <form phx-submit="decrypt">
+      <input type="password" name="key" placeholder="Enter the key" autocomplete="off"/>
+    </form>
+
+    <blockquote>
+      <p><%= aesir.description %></p>
+      <br />
+      <strong><%= decrypted %></strong>
+    </blockquote>
+<% end %>

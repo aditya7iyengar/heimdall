@@ -1,8 +1,0 @@
-<h4> Decrypted Secure Data </h2>
-
-<blockquote>
-  <p><%= @aesir.description %></p>
-  <br />
-  <strong><%= @decrypted %></strong>
-</blockquote>
-
