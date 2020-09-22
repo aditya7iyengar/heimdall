@@ -16,6 +16,17 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
+import ClipboardJS from "clipboard"
+
+var clipboard = new ClipboardJS('.clippy');
+
+clipboard.on('success', function(e) {
+    // TODO: Figure out how to clear clipboard after 10 seconds
+    setTimeout(function() {
+      e.clearSelection();
+      console.info('Text:', e.text);
+    }, 10000);
+});
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
@@ -32,4 +43,3 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
-

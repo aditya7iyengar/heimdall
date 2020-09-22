@@ -1,6 +1,7 @@
 <%= case @result do %>
   <% {:error, :not_found} -> %>
     404 Not Found
+
   <% {:ok, aesir} -> %>
     <h4> Showing Secure Data </h2>
 
@@ -14,6 +15,7 @@
       <br />
       <em>Encrypted using: <%= aesir.encryption_algo %></em>
     </blockquote>
+
   <% {:ok, decrypted, aesir} -> %>
     <h4> Showing Secure Data </h2>
 
@@ -23,7 +25,11 @@
 
     <blockquote>
       <p><%= aesir.description %></p>
+
       <br />
-      <strong><%= decrypted %></strong>
+
+      <button class="clippy" data-clipboard-text="<%= decrypted %>">
+          Copy to clipboard
+      </button>
     </blockquote>
 <% end %>

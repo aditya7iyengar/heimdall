@@ -22,7 +22,7 @@ defmodule BifrostWeb.AesirLive do
       _ ->
         {:noreply,
          socket
-         |> put_flash(:info, "Decrypted message")
+         |> put_flash(:info, "Message decrypted and ready to copy to clipboard")
          |> assign(result: result)}
     end
   end
