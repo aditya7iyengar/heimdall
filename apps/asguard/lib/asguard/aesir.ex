@@ -6,14 +6,20 @@ defmodule Asguard.Aesir do
     encrypted
     encryption_algo
     uuid
+    iat
+    exp
   )a
 
   @optional_keys ~w(encryption_meta)a
 
   defstruct @enforce_keys ++ @optional_keys
 
-  def from_params(params) do
-    params = Map.put(params, :uuid, generate_uuid())
+  def from_params(params, iat \\ DateTime.utc_now(), ttl \\ 5) do
+    params =
+      params
+      |> Map.put(:uuid, generate_uuid())
+      |> Map.put(:iat, iat)
+      |> Map.put(:exp, DateTime.add(iat, ttl * 60, :second))
 
     struct!(__MODULE__, params)
   end

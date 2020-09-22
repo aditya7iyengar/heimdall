@@ -26,7 +26,7 @@ defmodule Asguard.MixProject do
 
   defp deps do
     [
-      {:elixir_uuid, "~> 1.2"}
+      {:elixir_uuid, "~> 1.2.1"}
     ]
   end
 end

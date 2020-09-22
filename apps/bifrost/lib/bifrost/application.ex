@@ -14,7 +14,8 @@ defmodule Bifrost.Application do
       # Start the Endpoint (http/https)
       BifrostWeb.Endpoint,
       # Start secure data store
-      Asguard
+      Asguard,
+      Bifrost.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

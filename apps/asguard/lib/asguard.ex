@@ -50,6 +50,16 @@ defmodule Asguard do
     end
   end
 
+  def delete(uuid) do
+    case GenServer.call(__MODULE__, {:delete, uuid}) do
+      nil ->
+        {:error, :not_found}
+
+      aesir ->
+        {:ok, aesir}
+    end
+  end
+
   # TODO: Write tests for search/1
   def search(description_text) do
     GenServer.call(__MODULE__, {:search, description_text})
@@ -68,6 +78,11 @@ defmodule Asguard do
   @impl true
   def handle_call({:get, uuid}, _from, aesirs) do
     {:reply, Enum.find(aesirs, &(&1.uuid == uuid)), aesirs}
+  end
+
+  def handle_call({:delete, uuid}, _from, aesirs) do
+    aesir = Enum.find(aesirs, &(&1.uuid == uuid))
+    {:reply, aesir, aesirs -- [aesir]}
   end
 
   @impl true

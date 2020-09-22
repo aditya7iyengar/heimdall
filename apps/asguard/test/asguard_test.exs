@@ -32,7 +32,9 @@ defmodule AsguardTest do
         description: "Description",
         encrypted: txt,
         encryption_algo: :plaintext,
-        uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304"
+        uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
+        iat: DateTime.utc_now(),
+        exp: DateTime.utc_now()
       }
 
       uuid = GenServer.call(@module, {:insert, inserted_aesir})
@@ -59,7 +61,9 @@ defmodule AsguardTest do
         description: "Description",
         encrypted: txt,
         encryption_algo: :plaintext,
-        uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304"
+        uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
+        iat: DateTime.utc_now(),
+        exp: DateTime.utc_now()
       }
 
       uuid = GenServer.call(@module, {:insert, inserted_aesir})
