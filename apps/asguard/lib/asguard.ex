@@ -39,6 +39,10 @@ defmodule Asguard do
     end
   end
 
+  def search(description_text) do
+    GenServer.call(__MODULE__, {:search, description_text})
+  end
+
   # Server callbacks
 
   @impl true
@@ -52,5 +56,10 @@ defmodule Asguard do
   @impl true
   def handle_call({:get, uuid}, _from, aesirs) do
     {:reply, Enum.find(aesirs, &(&1.uuid == uuid)), aesirs}
+  end
+
+  @impl true
+  def handle_call({:search, description_text}, _from, aesirs) do
+    {:reply, Enum.filter(aesirs, &(&1.description =~ description_text)), aesirs}
   end
 end
