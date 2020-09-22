@@ -45,7 +45,9 @@ defmodule Asguard do
         {:error, :not_found}
 
       aesir ->
-        {:ok, Encryption.decrypt(aesir.encrypted, key, aesir.encryption_algo)}
+        decrypted =
+          Encryption.decrypt(aesir.encrypted, key, aesir.encryption_algo)
+        {:ok, decrypted, aesir}
     end
   end
 

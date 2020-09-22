@@ -38,6 +38,7 @@ defmodule BifrostWeb.Router do
   scope "/", BifrostWeb do
     pipe_through :public_browser
 
+    get "/aesirs/:uuid/decrypt", AesirController, :decrypt
     get "/aesirs/:uuid", AesirController, :show
   end
 

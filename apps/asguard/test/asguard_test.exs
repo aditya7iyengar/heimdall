@@ -41,10 +41,11 @@ defmodule AsguardTest do
     end
 
     test "gets decrypted aesir when uuid is present", %{uuid: uuid, txt: txt} do
-      {status, result} = @module.get(uuid, :key)
+      {status, result, aesir} = @module.get(uuid, :key)
 
       assert status == :ok
       assert result == txt
+      assert aesir.__struct__ == @module.Aesir
     end
   end
 
@@ -66,11 +67,11 @@ defmodule AsguardTest do
       {:ok, uuid: uuid, txt: txt}
     end
 
-    test "gets encrypted aesir when uuid is present", %{uuid: uuid, txt: txt} do
-      {status, result} = @module.get_encrypted(uuid)
+    test "gets encrypted aesir when uuid is present", %{uuid: uuid} do
+      {status, aesir} = @module.get_encrypted(uuid)
 
       assert status == :ok
-      assert result.__struct__ == @module.Aesir
+      assert aesir.__struct__ == @module.Aesir
     end
   end
 end

@@ -7,6 +7,13 @@
   <input type="text" name="q" value="<%= @query %>" placeholder="Live aesir search" list="results" autocomplete="off"/>
 </form>
 
-<%= for %{description: description, uuid: uuid} <- @results do %>
-  <option value="<%= uuid %>"><%= description %></option>
-<% end %>
+<table>
+  <tbody>
+  <%= for %{description: description, uuid: uuid} <- @results do %>
+    <tr>
+      <td><%= description %></td>
+      <td><%= link(uuid, to: Routes.aesir_path(BifrostWeb.Endpoint, :show, uuid)) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
