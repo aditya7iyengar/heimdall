@@ -29,6 +29,16 @@ defmodule Asguard do
     end
   end
 
+  def get_encrypted(uuid) do
+    case GenServer.call(__MODULE__, {:get, uuid}) do
+      nil ->
+        {:error, :not_found}
+
+      aesir ->
+        {:ok, aesir}
+    end
+  end
+
   def get(uuid, key) do
     case GenServer.call(__MODULE__, {:get, uuid}) do
       nil ->

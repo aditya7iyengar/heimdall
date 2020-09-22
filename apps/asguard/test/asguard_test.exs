@@ -40,11 +40,37 @@ defmodule AsguardTest do
       {:ok, uuid: uuid, txt: txt}
     end
 
-    test "gets encrypted aesir when uuid is present", %{uuid: uuid, txt: txt} do
+    test "gets decrypted aesir when uuid is present", %{uuid: uuid, txt: txt} do
       {status, result} = @module.get(uuid, :key)
 
       assert status == :ok
       assert result == txt
+    end
+  end
+
+  describe "get_encrypted/1" do
+    setup do
+      @module.start_link([])
+
+      txt = "encrypted"
+
+      inserted_aesir = %@module.Aesir{
+        description: "Description",
+        encrypted: txt,
+        encryption_algo: :plaintext,
+        uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304"
+      }
+
+      uuid = GenServer.call(@module, {:insert, inserted_aesir})
+
+      {:ok, uuid: uuid, txt: txt}
+    end
+
+    test "gets encrypted aesir when uuid is present", %{uuid: uuid, txt: txt} do
+      {status, result} = @module.get_encrypted(uuid)
+
+      assert status == :ok
+      assert result.__struct__ == @module.Aesir
     end
   end
 end

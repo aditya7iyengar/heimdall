@@ -9,4 +9,4 @@ config :bifrost, BifrostWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-config :bifrost_web, :basic_auth, username: "test_user", password: "secret"
+config :bifrost, :basic_auth, username: "test_user", password: "secret"
