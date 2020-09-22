@@ -32,7 +32,7 @@ defmodule BifrostWeb.Router do
 
     live "/", PageLive, :index
 
-    resources "/aesirs", AesirController, only: [:index, :show, :edit, :update]
+    resources "/aesirs", AesirController, only: [:new, :create, :delete]
   end
 
   scope "/", BifrostWeb do

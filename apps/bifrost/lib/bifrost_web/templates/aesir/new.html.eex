@@ -1,0 +1,16 @@
+<%= form_for :aesir, Routes.aesir_path(BifrostWeb.Endpoint, :create), fn f -> %>
+  <%= label f, :raw, class: "control-label" %>
+  <%= password_input f, :raw %>
+
+  <%= label f, :key, class: "control-label" %>
+  <%= password_input f, :key %>
+
+  <%= label f, :description, class: "control-label" %>
+  <%= text_input f, :description %>
+
+  <%= label f, :encryption_algo, class: "control-label" %>
+  <%= select f, :encryption_algo, ~w(aes plain), selected: "aes" %>
+
+  <br />
+  <%= submit "Insert Secure Data" %>
+<% end %>

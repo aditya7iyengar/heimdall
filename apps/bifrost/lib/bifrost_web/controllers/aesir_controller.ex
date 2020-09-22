@@ -1,21 +1,21 @@
 defmodule BifrostWeb.AesirController do
   use BifrostWeb, :controller
 
-  def new(conn, _params), do: render("new.html", conn: conn)
+  def new(conn, _params), do: render(conn, "new.html", conn: conn)
 
   def create(conn, %{"aesir" => aesir_params}) do
-    args = parse_aesir_params(aesir_params)
+    args = parse_aesir_args(aesir_params)
 
     case apply(Asguard, :insert, args) do
       {:ok, uuid} ->
         conn
         |> put_flash(:info, "Inserted aesir #{uuid}")
-        |> redirect_to("/")
+        |> redirect(to: "/")
 
       {:error, :could_not_insert} ->
         conn
         |> put_flash(:error, "Error in insertion")
-        |> redirect_to("/")
+        |> redirect(to: "/")
     end
   end
 
