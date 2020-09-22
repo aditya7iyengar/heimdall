@@ -31,6 +31,14 @@ defmodule BifrostWeb.Router do
     pipe_through :private_browser
 
     live "/", PageLive, :index
+
+    resources "/aesirs", AesirController, only: [:index, :show, :edit, :update]
+  end
+
+  scope "/", BifrostWeb do
+    pipe_through :public_browser
+
+    get "/aesirs/:uuid", AesirController, :show
   end
 
   # Other scopes may use custom stacks.

@@ -39,6 +39,7 @@ defmodule Asguard do
     end
   end
 
+  # TODO: Write tests for search/1
   def search(description_text) do
     GenServer.call(__MODULE__, {:search, description_text})
   end
