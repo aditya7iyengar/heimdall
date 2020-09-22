@@ -14,13 +14,16 @@
       <section class="container">
         <nav role="navigation">
           <ul>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+            <% uuid_regex = ~r/aesirs\/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/ %>
+            <% uuid_path = @conn.request_path =~ uuid_regex %>
+            <%= if function_exported?(Routes, :live_dashboard_path, 2) && !uuid_path do %>
               <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
             <% end %>
           </ul>
         </nav>
       </section>
     </header>
+
     <%= @inner_content %>
   </body>
 </html>
