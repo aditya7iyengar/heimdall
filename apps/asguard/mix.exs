@@ -34,7 +34,7 @@ defmodule Asguard.MixProject do
   defp deps do
     [
       {:elixir_uuid, "~> 1.2.1"},
-      {:excoveralls, "~> 0.13.2", only: :test},
+      {:excoveralls, "~> 0.13.2", only: :test}
     ]
   end
 end

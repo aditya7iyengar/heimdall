@@ -27,7 +27,6 @@ defmodule Asguard.AesirSweeperTest do
         exp: DateTime.utc_now()
       }
 
-
       new_uuid = GenServer.call(Asguard, {:insert, new_aesir})
       old_uuid = GenServer.call(Asguard, {:insert, old_aesir})
 
