@@ -19,3 +19,12 @@ record of your secure information.
 Heimdall allows you to share SSN using a temporary link (which disappears in
 5 mins or any configurable amount of time) and you can choose to encrypt it
 using a key or PGP.
+
+## TODO
+
+- [ ] Increase test coverage
+- [ ] Add CI
+- [ ] Deploy w/ k8s
+- [ ] Add CD
+- [ ] Add documentation
+- [ ] Add more TODOs
