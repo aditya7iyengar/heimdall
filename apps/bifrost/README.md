@@ -1,3 +1,3 @@
 # Bifrost
 
-Web layer for Heimdoll
+Web layer for Heimdall
