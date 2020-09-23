@@ -17,7 +17,7 @@ defmodule AsguardTest do
       assert is_binary(return_value)
 
       # Validate return_value is a UUID string
-      {parse_status, parsed_uuid} = UUID.info(return_value)
+      {parse_status, _parsed_uuid} = UUID.info(return_value)
       assert parse_status == :ok
 
       @module.delete(return_value)
