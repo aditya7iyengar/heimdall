@@ -1,0 +1,15 @@
+{
+  "skip_files": [
+    "lib/bifrost/application.ex",
+    "lib/bifrost_web/user_socket.ex",
+    "lib/bifrost_web/endpoint.ex",
+    "lib/bifrost_web/gettext.ex",
+    "lib/bifrost_web/telemetry.ex",
+    "test/support"
+  ],
+  "coverage_options": {
+    "treat_no_relevant_lines_as_covered": true,
+    "output_dir": "cover/",
+    "minimum_coverage": 90
+  }
+}

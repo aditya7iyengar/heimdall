@@ -16,7 +16,14 @@ defmodule Bifrost.MixProject do
       elixir: @elixir,
       elixirc_paths: elixirc_paths(Mix.env()),
       lockfile: "../../mix.lock",
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
       start_permanent: Mix.env() == :prod,
+      test_coverage: [tool: ExCoveralls],
       version: @version
     ]
   end
@@ -41,6 +48,7 @@ defmodule Bifrost.MixProject do
   defp deps do
     [
       {:asguard, in_umbrella: true},
+      {:excoveralls, "~> 0.13.2", only: :test},
       {:floki, ">= 0.27.0", only: :test},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},

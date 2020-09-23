@@ -6,8 +6,8 @@ Share sensitive information with temporary links and encryption!
 
 ## Naming
 
-Heimdall (pronounced Haim-Doll) in norse mythology is the "ever-vigilant" god
-who guards Bifrost (pronounced Byff-Rost), the rainbow bridge that leads to
+Heimdall (pronounced _Haim-Doll_) in norse mythology is the "ever-vigilant" god
+who guards Bifrost (pronounced _Byff-Rost_), the rainbow bridge that leads to
 Asgard.
 
 ## Use Case
