@@ -1,8 +1,6 @@
 defmodule Asguard.Encryption do
   @moduledoc false
 
-  def encrypt(raw, key, encryption_algo \\ :aes_gcm)
-
   def encrypt(raw, _key, :plaintext), do: raw
 
   def encrypt(raw, key, :aes_gcm) do
@@ -19,8 +17,6 @@ defmodule Asguard.Encryption do
 
     :base64.encode(initialization_vector <> ciphertag <> ciphertext)
   end
-
-  def decrypt(encrypted, key, encryption_algo \\ :aes_gcm)
 
   def decrypt(encrypted, _key, :plaintext), do: encrypted
 
