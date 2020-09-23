@@ -37,10 +37,6 @@ defmodule BifrostWeb.PageLive do
   end
 
   defp search(query) do
-    if not BifrostWeb.Endpoint.config(:code_reloader) do
-      raise "action disabled when not in development"
-    end
-
     Asguard.search(query)
   end
 end
