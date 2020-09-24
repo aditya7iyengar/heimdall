@@ -32,6 +32,16 @@ defmodule BifrostWeb.ConnCase do
   end
 
   setup _tags do
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    conn = Phoenix.ConnTest.build_conn()
+
+    auth_conn =
+      Plug.Conn.put_req_header(
+        conn,
+        "authorization",
+        # Same as configured
+        Plug.BasicAuth.encode_basic_auth("test_user", "secret")
+      )
+
+    {:ok, auth_conn: auth_conn, unauth_conn: conn}
   end
 end

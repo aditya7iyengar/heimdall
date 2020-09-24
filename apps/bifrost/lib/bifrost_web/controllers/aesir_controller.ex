@@ -19,6 +19,7 @@ defmodule BifrostWeb.AesirController do
     end
   end
 
+  # TODO: Move to someplace else
   defp parse_aesir_args(aesir_params) do
     encryption_algo =
       aesir_params

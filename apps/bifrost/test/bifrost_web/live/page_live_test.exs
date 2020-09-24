@@ -3,15 +3,7 @@ defmodule BifrostWeb.PageLiveTest do
 
   import Phoenix.LiveViewTest
 
-  setup %{conn: conn} do
-    auth_conn =
-      put_req_header(
-        conn,
-        "authorization",
-        # Same as configured
-        Plug.BasicAuth.encode_basic_auth("test_user", "secret")
-      )
-
+  setup %{auth_conn: conn} do
     description = "Some Description"
 
     inserted_aesir = %Asguard.Aesir{
@@ -27,7 +19,7 @@ defmodule BifrostWeb.PageLiveTest do
 
     on_exit(fn -> Asguard.delete(uuid) end)
 
-    {:ok, auth_conn: auth_conn, unauth_conn: conn, description: description}
+    {:ok, auth_conn: conn, description: description}
   end
 
   test "disconnected and connected render", %{auth_conn: conn} do
