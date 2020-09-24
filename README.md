@@ -22,8 +22,16 @@ using a key or PGP.
 
 ## TODO
 
-- [ ] Increase test coverage
+- [ ] Increase test coverage to > 90%
+- [ ] Add decryption failure use case in live view
+- [ ] Add time to the UI
+- [ ] Add other filters (geography etc)
+- [ ] Add `direnv` integration
+- [ ] Add end-to-end testing using `cypress`
 - [ ] Add CI
+- [ ] Add `Dockerfile`
+- [ ] Add `docker-compose.yml`
+- [ ] Add notes for `ngrok` integration
 - [ ] Deploy w/ k8s
 - [ ] Add CD
 - [ ] Add documentation
