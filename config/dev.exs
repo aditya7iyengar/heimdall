@@ -67,6 +67,6 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :bifrost,
-  :basic_auth,
-  username: System.get_env("BIFROST_USER"),
-  password: System.get_env("BIFROST_PASSWORD")
+       :basic_auth,
+       username: System.get_env("BIFROST_USER"),
+       password: System.get_env("BIFROST_PASSWORD")
