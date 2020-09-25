@@ -40,6 +40,8 @@ describe('Up and Running', () => {
     cy.wait(10)
     cy.get('form').submit()
 
+    // Give a few milliseconds for the websocket to do its magic
+    cy.wait(1000)
     // Visit aesir link
     cy.get('a[class="aesir-link"]').first().click()
 
