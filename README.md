@@ -63,11 +63,13 @@ locally:
 
 You can get the server up and running at the default port `4010` by running:
 
-`$ git clone aditya7iyengar/heimdall`
-`$ cd heimdall`
-`$ direnv allow .`
-`$ mix deps.get`
-`$ mix phx.server`
+```
+$ git clone aditya7iyengar/heimdall
+$ cd heimdall
+$ direnv allow .
+$ mix deps.get
+$ mix phx.server
+```
 
 _NOTE: You can override defaults by creating `.envrc.custom` file to override
 `.envrc` contents_
@@ -86,21 +88,15 @@ accessed by anyone. Make sure to stop the `ngrok` process once the information
 is already shared.
 
 
-## TODO
+## Roadmap
 
-- [X] Increase test coverage to > 90%
-- [X] Add decryption failure use case in live view
-- [X] Add `direnv` integration
-- [X] Add end-to-end testing using `cypress`
-- [X] Add CI
-- [X] Add `Dockerfile`
-- [X] Publish to `dockerhub`
+- [ ] Add "add aesir" link
 - [ ] Make `Dockerfile` more env friendly
-- [ ] Add time to aesir form
+- [ ] Add ttl to aesir form in the UI
 - [ ] Add wrong attempts to aesirs
 - [ ] Add geography/IP filter
 - [ ] Add limit to number of times the link is decrypted
-- [ ] Add an API
+- [ ] Add an API endpoint for adding aesirs
 - [ ] Add a `cli` app that talks to the API
 - [ ] Add show/hide key button
 - [ ] Add notes for `ngrok` integration
