@@ -45,9 +45,9 @@ describe('Up and Running', () => {
 
     // Decrypt the information
     cy.get('input[type=password]').invoke('val', 'secret')
+    cy.get('form').submit()
     // Give a few milliseconds for the websocket to do its magic
     cy.wait(10)
-    cy.get('form').submit()
     cy.get('button').should('contain.text', 'Copy to clipboard')
   })
 })
