@@ -13,11 +13,17 @@ defmodule BifrostWeb.AesirLive do
     result = Asguard.get(uuid, key)
 
     case result do
-      {:error, _} ->
+      {:error, :not_found} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Secure data not found. Maybe it expired...")
+         |> assign(result: result)}
+
+      {:error, :decryption_error} ->
         {:noreply,
          socket
          |> put_flash(:error, "Error in decryption")
-         |> assign(result: result)}
+         |> assign(result: Asguard.get_encrypted(uuid))}
 
       _ ->
         {:noreply,

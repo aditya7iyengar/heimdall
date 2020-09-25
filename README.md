@@ -27,7 +27,7 @@ __TODO: Add docker + ngrok setup information__
 ## TODO
 
 - [X] Increase test coverage to > 90%
-- [ ] Add decryption failure use case in live view
+- [X] Add decryption failure use case in live view
 - [ ] Add time to the UI
 - [ ] Add other filters (geography etc)
 - [X] Add `direnv` integration

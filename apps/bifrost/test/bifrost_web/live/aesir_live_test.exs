@@ -5,23 +5,14 @@ defmodule BifrostWeb.AesirLiveTest do
 
   setup %{unauth_conn: conn} do
     description = "Some Description"
-    encrypted = "encrypted"
-    uuid = "cdfdaf44-ee35-11e3-846b-14109ff1a304"
+    message = "encrypted"
+    key = "secret"
 
-    inserted_aesir = %Asguard.Aesir{
-      description: description,
-      encrypted: encrypted,
-      encryption_algo: :plaintext,
-      uuid: uuid,
-      iat: DateTime.utc_now(),
-      exp: DateTime.utc_now()
-    }
-
-    uuid = GenServer.call(Asguard, {:insert, inserted_aesir})
+    {:ok, uuid} = Asguard.insert(message, key, description, :aes_gcm)
 
     on_exit(fn -> Asguard.delete(uuid) end)
 
-    {:ok, conn: conn, uuid: uuid}
+    {:ok, conn: conn, uuid: uuid, key: key}
   end
 
   test "disconnected and connected render", %{conn: conn, uuid: uuid} do
@@ -35,13 +26,28 @@ defmodule BifrostWeb.AesirLiveTest do
     refute render(page_live) =~ "Copy to clipboard"
   end
 
-  test "event: decrypt", %{conn: conn, uuid: uuid} do
-    {:ok, page_live, _disconnected_html} = live(conn, "/aesirs/#{uuid}")
+  describe "event: decrypt" do
+    test "when decryption is successful", %{conn: conn, uuid: uuid, key: key} do
+      {:ok, page_live, _disconnected_html} = live(conn, "/aesirs/#{uuid}")
 
-    html = render_submit(page_live, :decrypt, %{"key" => "key", "uuid" => uuid})
+      html = render_submit(page_live, :decrypt, %{"key" => key, "uuid" => uuid})
 
-    assert html =~ "Showing Secure Data"
-    refute html =~ "Encrypted using:"
-    assert html =~ "Copy to clipboard"
+      assert html =~ "Showing Secure Data"
+      refute html =~ "Encrypted using:"
+      assert html =~ "Copy to clipboard"
+    end
+
+    test "when decryption is a failure", %{conn: conn, uuid: uuid, key: key} do
+      {:ok, page_live, _disconnected_html} = live(conn, "/aesirs/#{uuid}")
+
+      key = key <> "a"
+
+      html = render_submit(page_live, :decrypt, %{"key" => key, "uuid" => uuid})
+
+      assert html =~ "Showing Secure Data"
+      assert html =~ "Encrypted using:"
+      assert html =~ "Error in decryption"
+      refute html =~ "Copy to clipboard"
+    end
   end
 end

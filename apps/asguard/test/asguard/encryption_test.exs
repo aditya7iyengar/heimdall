@@ -46,5 +46,17 @@ defmodule Asguard.EncryptionTest do
 
       assert decrypted == raw
     end
+
+    test "returns :error when bad key is provided and algo is aes_gcm" do
+      raw = "raw text"
+      algo = :aes_gcm
+      key = "secretkey"
+
+      encrypted = @module.encrypt(raw, key, algo)
+
+      decrypted = @module.decrypt(encrypted, "bad", algo)
+
+      assert decrypted == :error
+    end
   end
 end

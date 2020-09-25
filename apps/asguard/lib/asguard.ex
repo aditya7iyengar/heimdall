@@ -40,13 +40,12 @@ defmodule Asguard do
   end
 
   def get(uuid, key) do
-    case GenServer.call(__MODULE__, {:get, uuid}) do
-      nil ->
-        {:error, :not_found}
-
-      aesir ->
-        decrypted = Encryption.decrypt(aesir.encrypted, key, aesir.encryption_algo)
-        {:ok, decrypted, aesir}
+    with aesir when not is_nil(aesir) <- GenServer.call(__MODULE__, {:get, uuid}),
+         d when d != :error <- Encryption.decrypt(aesir.encrypted, key, aesir.encryption_algo) do
+      {:ok, d, aesir}
+    else
+      nil -> {:error, :not_found}
+      :error -> {:error, :decryption_error}
     end
   end
 
