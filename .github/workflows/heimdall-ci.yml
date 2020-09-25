@@ -145,11 +145,6 @@ jobs:
       with:
         node-version: 11.15.0
 
-    - name: Install DirEnv
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y direnv
-
     - name: Restore dependencies cache
       uses: actions/cache@v2
       with:
@@ -167,5 +162,13 @@ jobs:
       run: cd ui-tests && npm install
 
     - name: Run phoenix server & browser tests
+      env:
+        BIFROST_PORT=4010
+        BIFROST_USER=dev_user
+        BIFROST_PASSWORD=secret
+        CYPRESS_BIFROST_PORT=4010
+        CYPRESS_BIFROST_USER=dev_user
+        CYPRESS_BIFROST_PASSWORD=secret
+
       run: |
-        direnv allow . &&  mix phx.server && (cd ui-tests && npm run cypress:run)
+        (mix phx.server &) && (cd ui-tests && npm run cypress:run)
