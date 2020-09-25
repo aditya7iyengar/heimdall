@@ -5,6 +5,8 @@ on: push
 jobs:
   # Only works for pushes, not pull_requests
   prepare:
+    name: Prepare
+
     runs-on: ubuntu-latest
 
     if: "! contains(github.event.head_commit.message, '[skip ci]')"
@@ -172,4 +174,4 @@ jobs:
         CYPRESS_BIFROST_PASSWORD: secret
 
       run: |
-        (mix phx.server &) && (cd browser-tests && sleep 20 && npm run cypress:run)
+        (mix phx.server &) && (cd browser-tests && sleep 40 && npm run cypress:run)
