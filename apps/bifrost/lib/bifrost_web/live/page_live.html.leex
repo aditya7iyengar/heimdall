@@ -12,7 +12,7 @@
   <%= for %{description: description, uuid: uuid} <- @results do %>
     <tr>
       <td><%= description %></td>
-      <td><%= link(uuid, to: Routes.aesir_path(BifrostWeb.Endpoint, :show, uuid)) %></td>
+      <td><%= link(uuid, to: Routes.aesir_path(BifrostWeb.Endpoint, :show, uuid), class: "aesir-link") %></td>
     </tr>
   <% end %>
   </tbody>
