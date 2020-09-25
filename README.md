@@ -26,8 +26,8 @@ using a key or PGP.
 - [ ] Add decryption failure use case in live view
 - [ ] Add time to the UI
 - [ ] Add other filters (geography etc)
-- [ ] Add `direnv` integration
-- [ ] Add end-to-end testing using `cypress`
+- [X] Add `direnv` integration
+- [X] Add end-to-end testing using `cypress`
 - [ ] Add CI
 - [ ] Add `Dockerfile`
 - [ ] Add `docker-compose.yml`
