@@ -30,30 +30,39 @@ describe('Up and Running', () => {
     })
 
     cy.get('input[name="aesir[raw]"]').invoke('val', 'Raw value')
+
     cy.get('input[name="aesir[key]"]').invoke('val', 'secret')
+    // Give a few milliseconds for the websocket to do its magic
+    cy.wait(100)
+
     cy.get('input[name="aesir[description]"]').invoke('val', 'some description')
+
+
     cy.get('button[type=submit]').click()
 
     // On the main page, search for aesir's description
     cy.get('input[type=text]').invoke('val', 'some')
 
     // Give a few milliseconds for the websocket to do its magic
-    cy.wait(1000)
+    cy.wait(100)
 
     cy.get('form').submit()
 
     // Visit aesir link
-    cy.get('a[class="aesir-link"]', { timeout: 10000 }).first().click()
+    cy.get('a[class="aesir-link"]', { timeout: 1000 }).first().click()
+
+    // Give a few milliseconds for the websocket to do its magic
+    cy.wait(100)
 
     // Decrypt the information
     cy.get('input[type=password]').invoke('val', 'secret')
 
     // Give a few milliseconds for the websocket to do its magic
-    cy.wait(1000)
+    cy.wait(100)
 
     cy.get('form').submit()
 
     // Get button text
-    cy.get('button[class="clippy"]', { timeout: 10000 }).should('contain.text', 'Copy to clipboard')
+    cy.get('button[class="clippy"]', { timeout: 1000 }).should('contain.text', 'Copy to clipboard')
   })
 })

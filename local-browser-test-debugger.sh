@@ -10,7 +10,7 @@ do
   ./browser-test-runner.sh
 
   if [ $? -ne 0 ]; then
-    ++$failures
+    failures = $failures + 1
   fi
 
   sudo fuser -k 4010/tcp

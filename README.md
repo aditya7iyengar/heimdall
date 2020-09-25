@@ -94,7 +94,7 @@ is already shared.
 - [X] Add end-to-end testing using `cypress`
 - [X] Add CI
 - [X] Add `Dockerfile`
-- [ ] Publish to `dockerhub`
+- [X] Publish to `dockerhub`
 - [ ] Make `Dockerfile` more env friendly
 - [ ] Add time to aesir form
 - [ ] Add wrong attempts to aesirs
