@@ -168,6 +168,4 @@ jobs:
 
     - name: Run phoenix server & browser tests
       run: |
-        direnv allow .
-        mix phx.server
-        (cd ui-tests && npm run cypress:run)
+        direnv allow . &&  mix phx.server && (cd ui-tests && npm run cypress:run)
