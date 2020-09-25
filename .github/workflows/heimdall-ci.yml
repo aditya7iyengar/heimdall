@@ -170,6 +170,8 @@ jobs:
         CYPRESS_BIFROST_PORT: 4010
         CYPRESS_BIFROST_USER: dev_user
         CYPRESS_BIFROST_PASSWORD: secret
+        MIX_ENV: test
 
       run: |
-        (mix phx.server &) && (cd browser-tests && sleep 20 && npm run cypress:run)
+        mix compile
+        (mix phx.server &) && (cd browser-tests && sleep 5 && npm run cypress:run)
