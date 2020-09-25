@@ -163,12 +163,12 @@ jobs:
 
     - name: Run phoenix server & browser tests
       env:
-        BIFROST_PORT=4010
-        BIFROST_USER=dev_user
-        BIFROST_PASSWORD=secret
-        CYPRESS_BIFROST_PORT=4010
-        CYPRESS_BIFROST_USER=dev_user
-        CYPRESS_BIFROST_PASSWORD=secret
+        BIFROST_PORT: 4010
+        BIFROST_USER: dev_user
+        BIFROST_PASSWORD: secret
+        CYPRESS_BIFROST_PORT: 4010
+        CYPRESS_BIFROST_USER: dev_user
+        CYPRESS_BIFROST_PASSWORD: secret
 
       run: |
         (mix phx.server &) && (cd ui-tests && npm run cypress:run)
