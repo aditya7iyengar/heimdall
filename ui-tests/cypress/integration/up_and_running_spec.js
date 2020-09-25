@@ -5,21 +5,27 @@
  * $(npm bin)/cypress run --headless --browser chrome
  */
 
+const port = Cypress.env('BIFROST_PORT');
+const username = Cypress.env('BIFROST_USER');
+const password = Cypress.env('BIFROST_PASSWORD');
+
+console.log(`Your port for Heimdall ${port}`);
+
 describe('Up and Running', () => {
   it('visits the root page with http basic auth', () => {
-    cy.visit('http://localhost:4000', {
+    cy.visit(`http://localhost:${port}`, {
      auth: {
-        username: 'dev_user',
-        password: 'secret'
+        username: username,
+        password: password
       }
     })
   })
 
   it('tests the complete life cycle of an aesir', () => {
-    cy.visit('http://localhost:4000/aesirs/new', {
+    cy.visit(`http://localhost:${port}/aesirs/new`, {
      auth: {
-        username: 'dev_user',
-        password: 'secret'
+        username: username,
+        password: password
       }
     })
 

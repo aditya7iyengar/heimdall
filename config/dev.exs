@@ -7,7 +7,7 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :bifrost, BifrostWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: System.get_env("BIFROST_PORT")],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -66,4 +66,7 @@ config :phoenix, :stacktrace_depth, 20
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
-config :bifrost, :basic_auth, username: "dev_user", password: "secret"
+config :bifrost,
+  :basic_auth,
+  username: System.get_env("BIFROST_USER"),
+  password: System.get_env("BIFROST_PASSWORD")
