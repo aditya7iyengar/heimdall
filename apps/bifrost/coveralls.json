@@ -5,6 +5,7 @@
     "lib/bifrost_web/endpoint.ex",
     "lib/bifrost_web/gettext.ex",
     "lib/bifrost_web/telemetry.ex",
+    "lib/bifrost_web/views/error_helpers.ex",
     "test/support"
   ],
   "coverage_options": {
