@@ -172,4 +172,4 @@ jobs:
         CYPRESS_BIFROST_PASSWORD: secret
 
       run: |
-        (mix phx.server &) && (cd browser-tests && npm run cypress:run)
+        (mix phx.server &) && (cd browser-tests && sleep 20 && npm run cypress:run)
