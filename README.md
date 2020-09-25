@@ -20,17 +20,20 @@ Heimdall allows you to share SSN using a temporary link (which disappears in
 5 mins or any configurable amount of time) and you can choose to encrypt it
 using a key or PGP.
 
+## Local setup with Ngrok
+
+__TODO: Add docker + ngrok setup information__
+
 ## TODO
 
-- [ ] Increase test coverage to > 90%
+- [X] Increase test coverage to > 90%
 - [ ] Add decryption failure use case in live view
 - [ ] Add time to the UI
 - [ ] Add other filters (geography etc)
 - [X] Add `direnv` integration
 - [X] Add end-to-end testing using `cypress`
 - [X] Add CI
-- [ ] Add `Dockerfile`
-- [ ] Add `docker-compose.yml`
+- [X] Add `Dockerfile`
 - [ ] Add notes for `ngrok` integration
 - [ ] Deploy w/ k8s
 - [ ] Add CD
