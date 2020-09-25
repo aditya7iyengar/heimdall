@@ -28,7 +28,7 @@ using a key or PGP.
 - [ ] Add other filters (geography etc)
 - [X] Add `direnv` integration
 - [X] Add end-to-end testing using `cypress`
-- [ ] Add CI
+- [X] Add CI
 - [ ] Add `Dockerfile`
 - [ ] Add `docker-compose.yml`
 - [ ] Add notes for `ngrok` integration

@@ -173,5 +173,4 @@ jobs:
         CYPRESS_BIFROST_USER: dev_user
         CYPRESS_BIFROST_PASSWORD: secret
 
-      run: |
-        (mix phx.server &) && (cd browser-tests && sleep 40 && npm run cypress:run)
+      run: ./browser-test-runner.sh
