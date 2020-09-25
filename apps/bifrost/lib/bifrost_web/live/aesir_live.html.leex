@@ -19,10 +19,6 @@
   <% {:ok, decrypted, aesir} -> %>
     <h4> Showing Secure Data </h2>
 
-    <form phx-submit="decrypt">
-      <input type="password" name="key" placeholder="Enter the key" autocomplete="off"/>
-    </form>
-
     <blockquote>
       <p><%= aesir.description %></p>
 

@@ -23,3 +23,14 @@ echo "-----------------------------------------------"
 
 cd browser-tests
 npm run cypress:run
+
+# two retries (websocket timeout is a b**ch)
+if [ $? -ne 0 ]; then
+  npm run cypress:run
+fi
+if [ $? -ne 0 ]; then
+  npm run cypress:run
+fi
+
+# Run this manually to kill the background phoenix server (works on linux)
+# sudo fuser -k 4010/tcp

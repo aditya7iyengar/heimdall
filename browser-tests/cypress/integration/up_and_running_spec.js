@@ -36,20 +36,24 @@ describe('Up and Running', () => {
 
     // On the main page, search for aesir's description
     cy.get('input[type=text]').invoke('val', 'some')
-    // Give a few milliseconds for the websocket to do its magic
-    cy.wait(10)
-    cy.get('form').submit()
 
     // Give a few milliseconds for the websocket to do its magic
     cy.wait(1000)
+
+    cy.get('form').submit()
+
     // Visit aesir link
-    cy.get('a[class="aesir-link"]').first().click()
+    cy.get('a[class="aesir-link"]', { timeout: 10000 }).first().click()
 
     // Decrypt the information
     cy.get('input[type=password]').invoke('val', 'secret')
-    cy.get('form').submit()
+
     // Give a few milliseconds for the websocket to do its magic
     cy.wait(1000)
-    cy.get('button').should('contain.text', 'Copy to clipboard')
+
+    cy.get('form').submit()
+
+    // Get button text
+    cy.get('button[class="clippy"]', { timeout: 10000 }).should('contain.text', 'Copy to clipboard')
   })
 })
