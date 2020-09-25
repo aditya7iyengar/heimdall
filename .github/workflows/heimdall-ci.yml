@@ -159,7 +159,8 @@ jobs:
       run: cd apps/bifrost/assets && npm install
 
     - name: Install cypress dependencies
-      run: cd ui-tests && npm install
+      run: |
+        cd ui-tests && npm install cypress --save-dev && npm install
 
     - name: Run phoenix server & browser tests
       env:
