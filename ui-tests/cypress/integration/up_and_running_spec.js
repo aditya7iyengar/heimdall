@@ -1,9 +1,12 @@
 //
 
 describe('Up and Running', () => {
-  it('visit the root page', () => {
+  it('visits the root page with http basic auth', () => {
     cy.visit('http://localhost:4000', {
-      "headers": {"authorization": "Basic ZGV2X3VzZXI6c2VjcmV0"}
+     auth: {
+        username: 'dev_user',
+        password: 'secret'
+      }
     })
   })
 })
