@@ -160,7 +160,7 @@ jobs:
 
     - name: Install cypress dependencies
       run: |
-        cd ui-tests && npm install cypress --save-dev && npm install
+        cd browser-tests && npm install cypress --save-dev && npm install
 
     - name: Run phoenix server & browser tests
       env:
@@ -172,4 +172,4 @@ jobs:
         CYPRESS_BIFROST_PASSWORD: secret
 
       run: |
-        (mix phx.server &) && (cd ui-tests && npm run cypress:run)
+        (mix phx.server &) && (cd browser-tests && npm run cypress:run)
