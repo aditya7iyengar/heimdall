@@ -3,25 +3,153 @@ name: Heimdall CI
 on: push
 
 jobs:
-  build:
-
-    name: Build and test
+  # Only works for pushes, not pull_requests
+  prepare:
     runs-on: ubuntu-latest
+
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}"
+
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    needs: prepare
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Elixir
       uses: actions/setup-elixir@v1
       with:
-        elixir-version: '1.10.3' # Define the elixir version [required]
-        otp-version: '22.3' # Define the OTP version [required]
+        elixir-version: '1.10.3'
+        otp-version: '22.3'
+
     - name: Restore dependencies cache
       uses: actions/cache@v2
       with:
         path: deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
         restore-keys: ${{ runner.os }}-mix-
+
     - name: Install dependencies
       run: mix deps.get
+
+    - name: Compilation
+      run: mix compile
+
+  mix-test:
+    name: Mix Test
+
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Elixir
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: '1.10.3'
+        otp-version: '22.3'
+
+    - name: Restore dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+
+    - name: Install dependencies
+      run: mix deps.get
+
     - name: Run tests
       run: mix test
+
+  coverage:
+    name: Mix Coverage
+
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Elixir
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: '1.10.3'
+        otp-version: '22.3'
+
+    - name: Restore dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+
+    - name: Install dependencies
+      run: mix deps.get
+
+    - name: Run Coverage
+      run: mix coveralls -u
+
+  fmt:
+    name: Mix Format
+
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Elixir
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: '1.10.3'
+        otp-version: '22.3'
+
+    - name: Restore dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+
+    - name: Install dependencies
+      run: mix deps.get
+
+    - name: Check formatted
+      run: mix format --check-formatted
+
+  # TODO: Add browser-test to CI
+  # browser-test:
+  #   name: Browser Test
+  #
+  #   runs-on: ubuntu-latest
+  #
+  #   needs: build
+  #
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Set up Elixir
+  #     uses: actions/setup-elixir@v1
+  #     with:
+  #       elixir-version: '1.10.3'
+  #       otp-version: '22.3'
+  #
+  #   - name: Restore dependencies cache
+  #     uses: actions/cache@v2
+  #     with:
+  #       path: deps
+  #       key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+  #       restore-keys: ${{ runner.os }}-mix-
+  #
+  #   - name: Install dependencies
+  #     run: mix deps.get
+  #
+  #   - name: Run tests
+  #     run: mix test
