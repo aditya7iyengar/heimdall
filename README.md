@@ -45,7 +45,7 @@ dependencies on your host machine.
 Once you have `docker` installed, you can just run the following command to
 get the server up and running:
 
-`$ docker run -p 127.0.0.1:4010:4010 aditya7iyengar/heimdall:latest`
+`$ docker run -p 127.0.0.1:4010:4010 aditya7iyengar/heimdall:0.0.1`
 
 This command will start up an instance of `Heimdall` locally on your port
 `4010`. So, you can access the app at: `http://localhost:4010`
