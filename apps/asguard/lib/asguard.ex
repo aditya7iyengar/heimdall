@@ -13,7 +13,7 @@ defmodule Asguard do
     GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
-  def insert(raw, key, description, encryption_algo) do
+  def insert(raw, key, description, encryption_algo, ttl \\ 5) do
     encrypted = Encryption.encrypt(raw, key, encryption_algo)
 
     aesir =
@@ -21,7 +21,7 @@ defmodule Asguard do
         encrypted: encrypted,
         encryption_algo: encryption_algo,
         description: description
-      })
+      }, ttl)
 
     case GenServer.call(__MODULE__, {:insert, aesir}) do
       nil -> {:error, :could_not_insert}

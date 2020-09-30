@@ -11,6 +11,9 @@
   <%= label f, :encryption_algo, class: "control-label" %>
   <%= select f, :encryption_algo, ~w(aes plain), selected: "aes" %>
 
+  <%= label f, :ttl, "TTL (in minutes)", class: "control-label" %>
+  <%= number_input f, :ttl, value: 5 %>
+
   <br />
   <%= submit "Insert Secure Data" %>
 <% end %>

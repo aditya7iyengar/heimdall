@@ -30,7 +30,8 @@ defmodule BifrostWeb.AesirController do
       Map.fetch!(aesir_params, "raw"),
       Map.fetch!(aesir_params, "key"),
       Map.fetch!(aesir_params, "description"),
-      encryption_algo
+      encryption_algo,
+      Map.fetch!(aesir_params, "ttl"),
     ]
   end
 

@@ -14,7 +14,7 @@ defmodule Asguard.Aesir do
 
   defstruct @enforce_keys ++ @optional_keys
 
-  def from_params(params, iat \\ DateTime.utc_now(), ttl \\ 5) do
+  def from_params(params, ttl \\ 5, iat \\ DateTime.utc_now()) do
     params =
       params
       |> Map.put(:uuid, generate_uuid())

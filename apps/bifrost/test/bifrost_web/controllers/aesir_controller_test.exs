@@ -5,7 +5,8 @@ defmodule BifrostWeb.AesirControllerTest do
     "raw" => "Raw",
     "key" => "key",
     "description" => "Some description",
-    "encryption_algo" => "plain"
+    "encryption_algo" => "plain",
+    "ttl" => 5
   }
 
   describe "new/2" do
