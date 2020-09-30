@@ -90,12 +90,13 @@ is already shared.
 
 ## Roadmap
 
-- [ ] Add "add aesir" link
+- [X] Add "add aesir" link
 - [ ] Make `Dockerfile` more env friendly
 - [ ] Add ttl to aesir form in the UI
 - [ ] Add wrong attempts to aesirs
 - [ ] Add geography/IP filter
 - [ ] Add limit to number of times the link is decrypted
+- [ ] Add incoming aesirs? This will need some thought
 - [ ] Add an API endpoint for adding aesirs
 - [ ] Add a `cli` app that talks to the API
 - [ ] Add show/hide key button

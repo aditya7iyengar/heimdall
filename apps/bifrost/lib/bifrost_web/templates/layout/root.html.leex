@@ -12,18 +12,52 @@
   <body>
     <header>
       <section class="container">
-        <nav role="navigation">
-          <ul>
-            <% uuid_regex = ~r/aesirs\/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/ %>
-            <% uuid_path = @conn.request_path =~ uuid_regex %>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) && !uuid_path do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
-          </ul>
-        </nav>
+        <% uuid_regex = ~r/aesirs\/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/ %>
+        <% uuid_path = @conn.request_path =~ uuid_regex %>
+        <%= if !uuid_path do %>
+          <div class='navbar'>
+            <ul>
+              <li class="navbar_item"><%= link "Heimdall", to: "/" %></li>
+              <li class="navbar_item"><%= link "Add Information", to: Routes.aesir_path(BifrostWeb.Endpoint, :new) %></li>
+              <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+                <li class="navbar_item"><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
       </section>
     </header>
 
     <%= @inner_content %>
   </body>
 </html>
+
+<style>
+.navbar {
+  margin-bottom: 10px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navbar li {
+    float: left;
+    margin-bottom: 0;
+}
+
+.navbar li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar li a:hover {
+    background-color: #d3d3d3;
+}
+</style>

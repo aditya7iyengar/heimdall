@@ -27,6 +27,8 @@ defmodule BifrostWeb.PageLiveTest do
     app_name = Bifrost.app_name()
     assert disconnected_html =~ "Welcome to #{app_name}"
     assert render(page_live) =~ "Welcome to #{app_name}"
+    assert disconnected_html =~ "Heimdall"
+    assert disconnected_html =~ "Add Information"
   end
 
   test "change event: suggest", %{auth_conn: conn, description: description} do
