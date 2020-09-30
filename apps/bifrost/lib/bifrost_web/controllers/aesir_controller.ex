@@ -26,15 +26,23 @@ defmodule BifrostWeb.AesirController do
       |> Map.fetch!("encryption_algo")
       |> translate_to_asguardian_algo()
 
+    ttl =
+      aesir_params
+      |> Map.fetch!("ttl")
+      |> ttl_from_params()
+
     [
       Map.fetch!(aesir_params, "raw"),
       Map.fetch!(aesir_params, "key"),
       Map.fetch!(aesir_params, "description"),
       encryption_algo,
-      Map.fetch!(aesir_params, "ttl"),
+      ttl
     ]
   end
 
   defp translate_to_asguardian_algo("aes"), do: :aes_gcm
   defp translate_to_asguardian_algo("plain"), do: :plaintext
+
+  defp ttl_from_params(integer) when is_integer(integer), do: integer
+  defp ttl_from_params(str) when is_binary(str), do: String.to_integer(str)
 end

@@ -17,11 +17,14 @@ defmodule Asguard do
     encrypted = Encryption.encrypt(raw, key, encryption_algo)
 
     aesir =
-      Aesir.from_params(%{
-        encrypted: encrypted,
-        encryption_algo: encryption_algo,
-        description: description
-      }, ttl)
+      Aesir.from_params(
+        %{
+          encrypted: encrypted,
+          encryption_algo: encryption_algo,
+          description: description
+        },
+        ttl
+      )
 
     case GenServer.call(__MODULE__, {:insert, aesir}) do
       nil -> {:error, :could_not_insert}
