@@ -78,6 +78,10 @@ jobs:
 
     needs: build
 
+    env:
+      MIX_ENV: test
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir
@@ -98,6 +102,9 @@ jobs:
 
     - name: Run Coverage
       run: mix coveralls -u
+
+    - name: Report Coverage
+      run: mix coveralls.github
 
   fmt:
     name: Mix Format
