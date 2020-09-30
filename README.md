@@ -92,7 +92,7 @@ is already shared.
 
 - [X] Add "add aesir" link
 - [ ] Make `Dockerfile` more env friendly
-- [ ] Add ttl to aesir form in the UI
+- [X] Add ttl to aesir form in the UI
 - [ ] Add wrong attempts to aesirs
 - [ ] Add geography/IP filter
 - [ ] Add limit to number of times the link is decrypted
