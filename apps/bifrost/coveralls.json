@@ -1,5 +1,6 @@
 {
   "skip_files": [
+    "lib/bifrost_web.ex",
     "lib/bifrost/application.ex",
     "lib/bifrost_web/user_socket.ex",
     "lib/bifrost_web/endpoint.ex",

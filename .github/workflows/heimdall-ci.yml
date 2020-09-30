@@ -101,7 +101,7 @@ jobs:
       run: mix deps.get
 
     - name: Run Coverage
-      run: mix coveralls -u
+      run: mix coveralls
 
     - name: Report Coverage
       run: mix coveralls.github

@@ -23,9 +23,11 @@ defmodule BifrostWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  # coveralls-ignore-start
   pipeline :api do
     plug :accepts, ["json"]
   end
+  # coveralls-ignore-stop
 
   scope "/", BifrostWeb do
     pipe_through :private_browser
