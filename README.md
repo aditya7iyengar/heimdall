@@ -13,23 +13,23 @@ Asgard.
 ## A Simple Solution for a Simple Use Case
 
 You need to share your SSN with someone. You don't want to say it out loud
-on phone (you have people around you), and you also don't want send is as an
-email because it will be readily available to anyone who accesses (and hacks)
-that email in the future.
+on phone (you have people around you), and you also don't want send it in an
+email because it will be readily available to anyone who accesses (or hacks)
+the recipient email in the future.
 
 Heimdall allows you to share secure information such as your SSN using a
 __temporary__ link which disappears in 5 mins or any configurable amount of
 time. In this way, if someone does find a way to get the link in the future, it
 would likely be expired. You can also choose to encrypt the information using
-AES encryption for added security and the key could be something unique to
-the receiver (like the name of their first pet). This further decreases the
-number of people that could decrypt the information.
+AES encryption (PGP coming soon) for added security and the key could be
+something unique to the receiver (like the name of their first pet). This
+further decreases the number of people that could decrypt the information.
 
 ## Local setup
 
 ### Docker + Ngrok (Recommended)
 
-I recommend running it using `docker` so you won't have to install all the
+I recommend running Heimdall using `docker` so you won't have to install all the
 dependencies on your host machine.
 
 Once you have `docker` installed, you can just run the following command to
