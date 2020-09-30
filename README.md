@@ -1,5 +1,11 @@
 # Heimdall
 
+[![Build Status](https://github.com/aditya7iyengar/heimdall/workflows/Heimdall%20CI/badge.svg?branch=master)](https://github.com/aditya7iyengar/heimdall/actions?query=workflow%3A%22Heimdall+CI%22)
+![version](https://img.shields.io/badge/version-0.0.1-blue)
+[![Coverage Status](https://coveralls.io/repos/github/aditya7iyengar/heimdall/badge.svg?t=1Bje2f&branch=master)](https://coveralls.io/github/aditya7iyengar/heimdall?branch=master)
+![MIT LICENSE](https://img.shields.io/badge/license-MIT-blueviolet.svg)
+
+
 Share sensitive information with temporary urls and encryption!
 
 ![heimdall](https://media4.giphy.com/media/xE1QISPzqbUek/giphy.gif)
@@ -50,6 +56,27 @@ The above command should return a url through which your local port can be
 accessed by anyone. Make sure to stop the `ngrok` process once the information
 is already shared.
 
+By Default, the HTTP Basic Auth credentials in the docker container are:
+- username: dev_user
+- password: secret
+
+The port, HTTP Basic user and HTTP Basic password can all be overriden by
+setting the following environment variables during the docker run command:
+-BIFROST_PORT
+-BIFROST_USER
+-BIFROST_PASSWORD
+
+For example:
+
+```
+docker run -p 127.0.0.1:4000:4000 \
+  -e BIFROST_PORT=4000 \
+  -e BIFROST_USER=harry-potter \
+  -e BIFROST_PASSWORD=caput-draconis \
+  aditya7iyengar/heimdall:0.0.1
+```
+
+
 ### Elixir + Ngrok (for Elixir developers)
 
 `Heimdall` is a web app written using [Elixir](https://elixir-lang.org/) and
@@ -91,7 +118,7 @@ is already shared.
 ## Roadmap
 
 - [X] Add "add aesir" link
-- [ ] Make `Dockerfile` more env friendly
+- [X] Make `Dockerfile` more env friendly
 - [X] Add ttl to aesir form in the UI
 - [ ] Add wrong attempts to aesirs
 - [ ] Add geography/IP filter
