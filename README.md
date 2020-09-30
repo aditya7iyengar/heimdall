@@ -6,7 +6,7 @@
 [![MIT LICENSE](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://github.com/aditya7iyengar/heimdall/blob/master/LICENSE)
 
 
-Share sensitive information with temporary urls and encryption!
+Share sensitive information in a secure way with temporary urls and encryption!
 
 ![heimdall](https://media4.giphy.com/media/xE1QISPzqbUek/giphy.gif)
 
@@ -19,7 +19,7 @@ Asgard.
 ## A Simple Solution for a Simple Use Case
 
 You need to share your SSN with someone. You don't want to say it out loud
-on phone (you have people around you), and you also don't want send it in an
+on phone (you have people around you), and you also don't want to send it in an
 email because it will be readily available to anyone who accesses (or hacks)
 the recipient email in the future.
 
@@ -64,9 +64,9 @@ By Default, the HTTP Basic Auth credentials in the docker container are:
 The port, HTTP Basic user and HTTP Basic password can all be overriden by
 setting the following environment variables during the docker run command:
 
-- BIFROST_PORT
-- BIFROST_USER
-- BIFROST_PASSWORD
+- `BIFROST_PORT`
+- `BIFROST_USER`
+- `BIFROST_PASSWORD`
 
 For example:
 
