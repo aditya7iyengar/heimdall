@@ -31,6 +31,10 @@ AES encryption (PGP coming soon) for added security and the key could be
 something unique to the receiver (like the name of their first pet). This
 further decreases the number of people that could decrypt the information.
 
+### How it looks
+
+![demo](images/demo.gif)
+
 ## Local setup
 
 ### Docker + Ngrok (Recommended)
