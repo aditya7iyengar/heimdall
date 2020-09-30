@@ -57,14 +57,16 @@ accessed by anyone. Make sure to stop the `ngrok` process once the information
 is already shared.
 
 By Default, the HTTP Basic Auth credentials in the docker container are:
+
 - username: dev_user
 - password: secret
 
 The port, HTTP Basic user and HTTP Basic password can all be overriden by
 setting the following environment variables during the docker run command:
--BIFROST_PORT
--BIFROST_USER
--BIFROST_PASSWORD
+
+- BIFROST_PORT
+- BIFROST_USER
+- BIFROST_PASSWORD
 
 For example:
 
@@ -131,6 +133,7 @@ is already shared.
 - [ ] Deploy w/ `k8s`
 - [ ] Add CD
 - [ ] Add documentation
+- [ ] Add better instructions for Elixir usage
 - [ ] Add PGP support
 - [ ] Add `credo`
 - [ ] Add `dialyzer`
