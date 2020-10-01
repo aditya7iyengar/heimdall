@@ -47,7 +47,11 @@ defmodule Bifrost.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.5.3"},
+      {:absinthe_phoenix, "~> 2.0.0"},
+      {:absinthe_plug, "~> 1.5.0"},
       {:asguard, in_umbrella: true},
+      {:dataloader, "~> 1.0.8"},
       {:excoveralls, "~> 0.13.2", only: :test},
       {:floki, ">= 0.27.0", only: :test},
       {:gettext, "~> 0.11"},
