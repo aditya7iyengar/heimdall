@@ -23,12 +23,11 @@ defmodule BifrostWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  # coveralls-ignore-start
-  pipeline :api do
+  pipeline :graphql_api do
     plug :accepts, ["json"]
-  end
 
-  # coveralls-ignore-stop
+    plug HeimdallQL
+  end
 
   scope "/", BifrostWeb do
     pipe_through :private_browser
@@ -44,10 +43,22 @@ defmodule BifrostWeb.Router do
     live "/aesirs/:uuid", AesirLive, :show
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", BifrostWeb do
-  #   pipe_through :api
-  # end
+  scope "/api/graphql" do
+    pipe_through [:graphql_api]
+
+    forward "/", Absinthe.Plug, schema: HeimdallQL.Schema
+  end
+
+  # coveralls-ignore-start
+  if Mix.env() == :dev do
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      default_url: "/api/graphql",
+      schema: HeimdallQL.Schema,
+      socket: BifrostWeb.UserSocket,
+      interface: :advanced
+  end
+
+  # coveralls-ignore-stop
 
   # Enables LiveDashboard only for development
   scope "/" do

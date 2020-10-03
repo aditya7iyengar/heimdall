@@ -130,10 +130,10 @@ is already shared.
 - [ ] Add geography/IP filter
 - [ ] Add limit to number of times the link is decrypted
 - [ ] Add incoming aesirs? This will need some thought
-- [ ] Add an API endpoint for adding aesirs
+- [X] Add an API endpoint for adding aesirs
 - [ ] Add a `cli` app that talks to the API
 - [ ] Add show/hide key button
-- [ ] Add notes for `ngrok` integration
+- [X] Add notes for `ngrok` integration
 - [ ] Deploy w/ `k8s`
 - [ ] Add CD
 - [ ] Add documentation

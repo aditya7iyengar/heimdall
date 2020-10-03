@@ -10,3 +10,5 @@ config :bifrost, BifrostWeb.Endpoint,
 config :logger, level: :warn
 
 config :bifrost, :basic_auth, username: "test_user", password: "secret"
+
+config :heimdall_ql, username: "test_user", password: "secret"
