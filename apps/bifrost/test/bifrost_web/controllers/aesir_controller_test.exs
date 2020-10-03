@@ -27,6 +27,11 @@ defmodule BifrostWeb.AesirControllerTest do
           aesir: @valid_aesir_params
         )
 
+      on_exit(fn ->
+        [aesir] = Asguard.search(@valid_aesir_params["description"])
+        Asguard.delete(aesir.uuid)
+      end)
+
       assert html_response(conn, 302) =~ "redirected"
       assert conn.private.plug_session["phoenix_flash"]["info"] =~ "Inserted"
     end
