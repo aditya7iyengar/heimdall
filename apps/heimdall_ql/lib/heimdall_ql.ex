@@ -10,9 +10,9 @@ defmodule HeimdallQL do
   def init(opts), do: opts
 
   def call(conn, _) do
-    case authenticate(conn) do
+    case authorize(conn) do
       :ok ->
-        Absinthe.Plug.put_options(conn, context: %{authenticated: true})
+        Absinthe.Plug.put_options(conn, context: %{authorized: true})
 
       :error ->
         conn
@@ -21,6 +21,20 @@ defmodule HeimdallQL do
     end
   end
 
-  # TODO: Add authentication
-  defp authenticate(_conn), do: :ok
+  defp authorize(conn) do
+    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
+         true <- token == "#{username()}:#{password()}" do
+      :ok
+    else
+      _ -> :error
+    end
+  end
+
+  defp username do
+    Application.get_env(:heimdall_ql, :username)
+  end
+
+  defp password do
+    Application.get_env(:heimdall_ql, :password)
+  end
 end
