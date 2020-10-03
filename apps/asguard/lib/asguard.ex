@@ -26,10 +26,9 @@ defmodule Asguard do
         ttl
       )
 
-    case GenServer.call(__MODULE__, {:insert, aesir}) do
-      nil -> {:error, :could_not_insert}
-      uuid -> {:ok, uuid}
-    end
+    uuid = GenServer.call(__MODULE__, {:insert, aesir})
+
+    {:ok, uuid}
   end
 
   def get_encrypted(uuid) do
