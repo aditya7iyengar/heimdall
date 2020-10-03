@@ -12,10 +12,8 @@ defmodule HeimdallQL.Resolver do
   def create_aesir(_, params, _) do
     args = parse_create_params_to_args(params)
 
-    case apply(Asguard, :insert, args) do
-      {:ok, uuid} -> Asguard.get_encrypted(uuid)
-      other -> other
-    end
+    {:ok, uuid} = apply(Asguard, :insert, args)
+    Asguard.get_encrypted(uuid)
   end
 
   defp parse_create_params_to_args(params) do
