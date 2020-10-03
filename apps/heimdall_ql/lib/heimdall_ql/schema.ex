@@ -17,4 +17,8 @@ defmodule HeimdallQL.Schema do
   query do
     import_fields(:aesir_queries)
   end
+
+  mutation do
+    import_fields(:aesir_mutations)
+  end
 end

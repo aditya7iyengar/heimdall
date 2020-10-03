@@ -12,6 +12,7 @@ defmodule HeimdallQL.MixProject do
       deps: deps(),
       deps_path: "../../deps",
       elixir: @elixir,
+      elixirc_paths: elixirc_paths(Mix.env()),
       lockfile: "../../mix.lock",
       preferred_cli_env: [
         coveralls: :test,
@@ -38,4 +39,7 @@ defmodule HeimdallQL.MixProject do
       {:excoveralls, "~> 0.13.2", only: :test}
     ]
   end
+
+  defp elixirc_paths(e) when e in [:dev, :test], do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 end

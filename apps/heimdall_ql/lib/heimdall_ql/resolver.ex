@@ -4,4 +4,27 @@ defmodule HeimdallQL.Resolver do
   def list_aesirs(_, _, _) do
     {:ok, Asguard.search("")}
   end
+
+  def get_aesir(_, %{uuid: uuid}, _) do
+    Asguard.get_encrypted(uuid)
+  end
+
+  def create_aesir(_, params, _) do
+    args = parse_create_params_to_args(params)
+
+    case apply(Asguard, :insert, args) do
+      {:ok, uuid} -> Asguard.get_encrypted(uuid)
+      other -> other
+    end
+  end
+
+  defp parse_create_params_to_args(params) do
+    [
+      Map.fetch!(params, :raw),
+      Map.fetch!(params, :key),
+      Map.fetch!(params, :description),
+      params |> Map.get(:encryption_algo, "aes_gcm") |> String.to_atom(),
+      Map.get(params, :ttl, 5)
+    ]
+  end
 end
