@@ -43,7 +43,7 @@ defmodule BifrostWeb.Router do
     live "/aesirs/:uuid", AesirLive, :show
   end
 
-  scope "/graphql_api" do
+  scope "/api/graphql" do
     pipe_through [:graphql_api]
 
     forward "/", Absinthe.Plug, schema: HeimdallQL.Schema

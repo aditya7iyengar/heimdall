@@ -9,7 +9,7 @@ defmodule HeimdallQL.Schema.Aesir do
 
   object :aesir_queries do
     @desc "List Aesirs"
-    field :aesir, list_of(:aesir) do
+    field :aesirs, list_of(:aesir) do
       resolve(&Resolver.list_aesirs/3)
     end
   end
