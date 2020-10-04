@@ -1,9 +1,9 @@
 # Heimdall
 
-[![Build Status](https://github.com/aditya7iyengar/heimdall/workflows/Heimdall%20CI/badge.svg?branch=master)](https://github.com/aditya7iyengar/heimdall/actions?query=workflow%3A%22Heimdall+CI%22)
+[![Build Status](https://github.com/aditya7iyengar/heimdall/workflows/Heimdall%20CI/badge.svg?branch=develop)](https://github.com/aditya7iyengar/heimdall/actions?query=workflow%3A%22Heimdall+CI%22)
 [![version](https://img.shields.io/badge/version-0.0.2-blue)](https://github.com/aditya7iyengar/heimdall/releases/tag/0.0.2)
-[![Coverage Status](https://coveralls.io/repos/github/aditya7iyengar/heimdall/badge.svg?t=1Bje2f&branch=master)](https://coveralls.io/github/aditya7iyengar/heimdall?branch=master)
-[![MIT LICENSE](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://github.com/aditya7iyengar/heimdall/blob/master/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/aditya7iyengar/heimdall/badge.svg?t=1Bje2f&branch=develop)](https://coveralls.io/github/aditya7iyengar/heimdall?branch=develop)
+[![MIT LICENSE](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://github.com/aditya7iyengar/heimdall/blob/develop/LICENSE)
 
 
 Share sensitive information in a secure way with temporary urls and encryption!
