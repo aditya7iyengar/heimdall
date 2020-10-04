@@ -1,7 +1,7 @@
 defmodule HeimdallQL.MixProject do
   use Mix.Project
 
-  @version "0.0.0"
+  @version "0.0.2"
   @elixir "1.10.4"
 
   def project do

@@ -1,7 +1,7 @@
 defmodule Heimdall.MixProject do
   use Mix.Project
 
-  @version "0.0.0"
+  @version "0.0.2"
 
   def project do
     [

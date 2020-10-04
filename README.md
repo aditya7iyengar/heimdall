@@ -1,7 +1,7 @@
 # Heimdall
 
 [![Build Status](https://github.com/aditya7iyengar/heimdall/workflows/Heimdall%20CI/badge.svg?branch=master)](https://github.com/aditya7iyengar/heimdall/actions?query=workflow%3A%22Heimdall+CI%22)
-[![version](https://img.shields.io/badge/version-0.0.1-blue)](https://github.com/aditya7iyengar/heimdall/releases/tag/0.0.1)
+[![version](https://img.shields.io/badge/version-0.0.2-blue)](https://github.com/aditya7iyengar/heimdall/releases/tag/0.0.2)
 [![Coverage Status](https://coveralls.io/repos/github/aditya7iyengar/heimdall/badge.svg?t=1Bje2f&branch=master)](https://coveralls.io/github/aditya7iyengar/heimdall?branch=master)
 [![MIT LICENSE](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://github.com/aditya7iyengar/heimdall/blob/master/LICENSE)
 
@@ -45,7 +45,7 @@ dependencies on your host machine.
 Once you have `docker` installed, you can just run the following command to
 get the server up and running:
 
-`$ docker run -p 127.0.0.1:4010:4010 aditya7iyengar/heimdall:0.0.1`
+`$ docker run -p 127.0.0.1:4010:4010 aditya7iyengar/heimdall:0.0.2`
 
 This command will start up an instance of `Heimdall` locally on your port
 `4010`. So, you can access the app at: `http://localhost:4010`
@@ -79,7 +79,7 @@ docker run -p 127.0.0.1:4000:4000 \
   -e BIFROST_PORT=4000 \
   -e BIFROST_USER=harry-potter \
   -e BIFROST_PASSWORD=caput-draconis \
-  aditya7iyengar/heimdall:0.0.1
+  aditya7iyengar/heimdall:0.0.2
 ```
 
 
