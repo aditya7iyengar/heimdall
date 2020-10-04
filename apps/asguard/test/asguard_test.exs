@@ -89,7 +89,7 @@ defmodule AsguardTest do
     end
 
     test "updates atttempts and returns error when decryption fails",
-         %{uuid: uuid, txt: txt} do
+         %{uuid: uuid} do
       {:ok, aesir} = @module.get_encrypted(uuid)
       assert aesir.current_attempts == 0
 
@@ -102,8 +102,7 @@ defmodule AsguardTest do
       assert aesir.current_attempts == 1
     end
 
-    test "when max_attempts have been met, returns error",
-         %{uuid: uuid, txt: txt} do
+    test "when max_attempts have been met, returns error", %{uuid: uuid} do
       {:ok, aesir} = @module.get_encrypted(uuid)
       assert aesir.current_attempts == 0
 

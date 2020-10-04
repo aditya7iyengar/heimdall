@@ -38,11 +38,16 @@ defmodule BifrostWeb.AesirControllerTest do
     end
 
     test "adds aesir to Asguard (with binary ttl)", %{auth_conn: conn} do
+      params =
+        @valid_aesir_params
+        |> Map.put("ttl", "5")
+        |> Map.put("max_attempts", "2")
+
       conn =
         post(
           conn,
           Routes.aesir_path(conn, :create),
-          aesir: Map.put(@valid_aesir_params, "ttl", "5")
+          aesir: params
         )
 
       on_exit(fn ->
