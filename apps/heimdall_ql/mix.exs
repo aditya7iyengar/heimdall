@@ -36,7 +36,8 @@ defmodule HeimdallQL.MixProject do
     [
       {:absinthe, "~> 1.5.3"},
       {:asguard, in_umbrella: true},
-      {:excoveralls, "~> 0.13.2", only: :test}
+      {:excoveralls, "~> 0.13.2", only: :test},
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 
