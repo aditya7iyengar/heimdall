@@ -8,7 +8,13 @@ defmodule BifrostWeb.AesirLiveTest do
     message = "encrypted"
     key = "secret"
 
-    {:ok, uuid} = Asguard.insert(message, key, :aes_gcm, %{description: description})
+    {:ok, uuid} =
+      Asguard.insert(
+        message,
+        key,
+        :aes_gcm,
+        %{description: description, max_attempts: 1}
+      )
 
     on_exit(fn -> Asguard.delete(uuid) end)
 
@@ -48,6 +54,18 @@ defmodule BifrostWeb.AesirLiveTest do
       assert html =~ "Encrypted using:"
       assert html =~ "Error in decryption"
       refute html =~ "Copy to clipboard"
+    end
+
+    test "when not attempts remaining", %{conn: conn, uuid: uuid, key: key} do
+      {:ok, page_live, _disconnected_html} = live(conn, "/aesirs/#{uuid}")
+
+      key = key <> "a"
+
+      html = render_submit(page_live, :decrypt, %{"key" => key, "uuid" => uuid})
+      assert html =~ "Error in decryption"
+
+      html = render_submit(page_live, :decrypt, %{"key" => key, "uuid" => uuid})
+      assert html =~ "No Attempts remaining"
     end
   end
 end

@@ -25,6 +25,12 @@ defmodule BifrostWeb.AesirLive do
          |> put_flash(:error, "Error in decryption")
          |> assign(result: Asguard.get_encrypted(uuid))}
 
+      {:error, :no_attempts_remaining} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "No Attempts remaining")
+         |> assign(result: Asguard.get_encrypted(uuid))}
+
       _ ->
         {:noreply,
          socket
