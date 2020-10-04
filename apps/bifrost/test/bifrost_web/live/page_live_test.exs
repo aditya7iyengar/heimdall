@@ -12,6 +12,7 @@ defmodule BifrostWeb.PageLiveTest do
       encryption_algo: :plaintext,
       uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
       max_attempts: :infinite,
+      current_attempts: 0,
       iat: DateTime.utc_now(),
       exp: DateTime.utc_now()
     }

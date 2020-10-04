@@ -12,6 +12,11 @@
 
     <blockquote>
       <p><%= aesir.description %></p>
+
+      <% if aesir.max_attempts != :infinite do %>
+        <p>Decryption attempts remaining: <%= aesir.max_attempts - aesir.current_attempts %></p>
+      <% end %>
+
       <br />
       <em>Encrypted using: <%= aesir.encryption_algo %></em>
     </blockquote>
