@@ -29,6 +29,7 @@ defmodule HeimdallQL.Schema.Aesir do
       arg(:description, non_null(:string))
       arg(:encryption_algo, :string)
       arg(:ttl, :integer)
+      arg(:max_attempts, :integer)
 
       resolve(&Resolver.create_aesir/3)
     end

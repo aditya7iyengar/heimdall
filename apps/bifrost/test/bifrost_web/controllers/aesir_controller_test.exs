@@ -6,6 +6,7 @@ defmodule BifrostWeb.AesirControllerTest do
     "key" => "key",
     "description" => "Some description",
     "encryption_algo" => "plain",
+    "max_attempts" => "infinite",
     "ttl" => 5
   }
 

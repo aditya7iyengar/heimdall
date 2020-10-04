@@ -7,7 +7,13 @@ defmodule HeimdallQL.ResolverTest do
     setup do
       Asguard.start_link([])
 
-      {:ok, uuid} = Asguard.insert("raw", :key, "Description", :plaintext)
+      {:ok, uuid} =
+        Asguard.insert(
+          "raw",
+          :key,
+          :plaintext,
+          %{description: "Description"}
+        )
 
       {:ok, aesir} = Asguard.get_encrypted(uuid)
 
@@ -30,7 +36,13 @@ defmodule HeimdallQL.ResolverTest do
     setup do
       Asguard.start_link([])
 
-      {:ok, uuid} = Asguard.insert("raw", :key, "Description", :plaintext)
+      {:ok, uuid} =
+        Asguard.insert(
+          "raw",
+          :key,
+          :plaintext,
+          %{description: "Description"}
+        )
 
       {:ok, aesir} = Asguard.get_encrypted(uuid)
 

@@ -11,7 +11,13 @@ defmodule AsguardTest do
     end
 
     test "inserts when valid arguments" do
-      {status, return_value} = @module.insert("raw_string", :key, "Description", :plaintext)
+      {status, return_value} =
+        @module.insert(
+          "raw_string",
+          :key,
+          :plaintext,
+          %{description: "Description"}
+        )
 
       assert status == :ok
       assert is_binary(return_value)

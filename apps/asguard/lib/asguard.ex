@@ -13,18 +13,15 @@ defmodule Asguard do
     GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
-  def insert(raw, key, description, encryption_algo, ttl \\ 5) do
+  def insert(raw, key, encryption_algo, params, ttl \\ 5) do
     encrypted = Encryption.encrypt(raw, key, encryption_algo)
 
-    aesir =
-      Aesir.from_params(
-        %{
-          encrypted: encrypted,
-          encryption_algo: encryption_algo,
-          description: description
-        },
-        ttl
-      )
+    params =
+      params
+      |> Map.put(:encrypted, encrypted)
+      |> Map.put(:encryption_algo, encryption_algo)
+
+    aesir = Aesir.from_params(params, ttl)
 
     uuid = GenServer.call(__MODULE__, {:insert, aesir})
 
