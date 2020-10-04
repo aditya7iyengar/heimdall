@@ -25,10 +25,7 @@ defmodule BifrostWeb.AesirController do
       |> Map.fetch!("ttl")
       |> ttl_from_params()
 
-    max_attempts =
-      aesir_params
-      |> Map.fetch!("max_attempts")
-      |> max_attempts_from_params()
+    max_attempts = Map.get(aesir_params, "max_attempts", :infinite)
 
     [
       Map.fetch!(aesir_params, "raw"),
@@ -47,7 +44,4 @@ defmodule BifrostWeb.AesirController do
 
   defp ttl_from_params(integer) when is_integer(integer), do: integer
   defp ttl_from_params(str) when is_binary(str), do: String.to_integer(str)
-
-  defp max_attempts_from_params(integer) when is_integer(integer), do: integer
-  defp max_attempts_from_params("infinite"), do: :infinite
 end
