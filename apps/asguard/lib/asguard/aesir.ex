@@ -5,6 +5,7 @@ defmodule Asguard.Aesir do
     description
     encrypted
     encryption_algo
+    max_attempts
     uuid
     iat
     exp
@@ -20,6 +21,7 @@ defmodule Asguard.Aesir do
       |> Map.put(:uuid, generate_uuid())
       |> Map.put(:iat, iat)
       |> Map.put(:exp, DateTime.add(iat, ttl * 60, :second))
+      |> Map.put_new(:max_attempts, :infinite)
 
     struct!(__MODULE__, params)
   end
