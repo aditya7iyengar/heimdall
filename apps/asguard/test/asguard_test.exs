@@ -11,7 +11,13 @@ defmodule AsguardTest do
     end
 
     test "inserts when valid arguments" do
-      {status, return_value} = @module.insert("raw_string", :key, "Description", :plaintext)
+      {status, return_value} =
+        @module.insert(
+          "raw_string",
+          :key,
+          :plaintext,
+          %{description: "Description"}
+        )
 
       assert status == :ok
       assert is_binary(return_value)
@@ -35,6 +41,8 @@ defmodule AsguardTest do
         encrypted: txt,
         encryption_algo: :plaintext,
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
+        max_attempts: :infinite,
+        current_attempts: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.utc_now()
       }
@@ -60,16 +68,12 @@ defmodule AsguardTest do
 
       txt = "encrypted"
 
-      inserted_aesir = %@module.Aesir{
+      params = %{
         description: "Description",
-        encrypted: txt,
-        encryption_algo: :plaintext,
-        uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
-        iat: DateTime.utc_now(),
-        exp: DateTime.utc_now()
+        max_attempts: 1
       }
 
-      uuid = GenServer.call(@module, {:insert, inserted_aesir})
+      {:ok, uuid} = @module.insert(txt, "key", :aes_gcm, params)
 
       on_exit(fn -> @module.delete(uuid) end)
 
@@ -77,11 +81,40 @@ defmodule AsguardTest do
     end
 
     test "gets decrypted aesir when uuid is present", %{uuid: uuid, txt: txt} do
-      {status, result, aesir} = @module.get(uuid, :key)
+      {status, result, aesir} = @module.get(uuid, "key")
 
       assert status == :ok
       assert result == txt
       assert aesir.__struct__ == @module.Aesir
+    end
+
+    test "updates atttempts and returns error when decryption fails",
+         %{uuid: uuid} do
+      {:ok, aesir} = @module.get_encrypted(uuid)
+      assert aesir.current_attempts == 0
+
+      {status, error} = @module.get(uuid, "bad-key")
+
+      assert status == :error
+      assert error == :decryption_error
+
+      {:ok, aesir} = @module.get_encrypted(uuid)
+      assert aesir.current_attempts == 1
+    end
+
+    test "when max_attempts have been met, returns error", %{uuid: uuid} do
+      {:ok, aesir} = @module.get_encrypted(uuid)
+      assert aesir.current_attempts == 0
+
+      @module.get(uuid, "bad-key")
+
+      {:ok, aesir} = @module.get_encrypted(uuid)
+      assert aesir.current_attempts == aesir.max_attempts
+
+      {status, error} = @module.get(uuid, "key")
+
+      assert status == :error
+      assert error == :no_attempts_remaining
     end
   end
 
@@ -96,6 +129,8 @@ defmodule AsguardTest do
         encrypted: txt,
         encryption_algo: :plaintext,
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
+        max_attempts: :infinite,
+        current_attempts: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.utc_now()
       }
@@ -131,6 +166,8 @@ defmodule AsguardTest do
         encrypted: txt,
         encryption_algo: :plaintext,
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
+        max_attempts: :infinite,
+        current_attempts: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.utc_now()
       }

@@ -13,18 +13,15 @@ defmodule Asguard do
     GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
-  def insert(raw, key, description, encryption_algo, ttl \\ 5) do
+  def insert(raw, key, encryption_algo, params, ttl \\ 5) do
     encrypted = Encryption.encrypt(raw, key, encryption_algo)
 
-    aesir =
-      Aesir.from_params(
-        %{
-          encrypted: encrypted,
-          encryption_algo: encryption_algo,
-          description: description
-        },
-        ttl
-      )
+    params =
+      params
+      |> Map.put(:encrypted, encrypted)
+      |> Map.put(:encryption_algo, encryption_algo)
+
+    aesir = Aesir.from_params(params, ttl)
 
     uuid = GenServer.call(__MODULE__, {:insert, aesir})
 
@@ -43,12 +40,39 @@ defmodule Asguard do
 
   def get(uuid, key) do
     with aesir when not is_nil(aesir) <- GenServer.call(__MODULE__, {:get, uuid}),
+         true <- decryption_attempts_remaining?(aesir),
          d when d != :error <- Encryption.decrypt(aesir.encrypted, key, aesir.encryption_algo) do
       {:ok, d, aesir}
     else
-      nil -> {:error, :not_found}
-      :error -> {:error, :decryption_error}
+      nil ->
+        {:error, :not_found}
+
+      false ->
+        {:error, :no_attempts_remaining}
+
+      :error ->
+        maybe_add_attempt(uuid)
+        {:error, :decryption_error}
     end
+  end
+
+  defp decryption_attempts_remaining?(%{max_attempts: :infinite}), do: true
+
+  defp decryption_attempts_remaining?(aesir) do
+    %{max_attempts: max_attempts, current_attempts: current_attempts} = aesir
+
+    max_attempts > current_attempts
+  end
+
+  defp maybe_add_attempt(uuid) do
+    aesir =
+      __MODULE__
+      |> GenServer.call({:get, uuid})
+      |> Aesir.add_attempt()
+
+    # TODO: Replace with update function
+    delete(uuid)
+    GenServer.call(__MODULE__, {:insert, aesir})
   end
 
   def delete(uuid) do
@@ -61,7 +85,6 @@ defmodule Asguard do
     end
   end
 
-  # TODO: Write tests for search/1
   def search(description_text) do
     GenServer.call(__MODULE__, {:search, description_text})
   end

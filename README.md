@@ -126,7 +126,7 @@ is already shared.
 - [X] Add "add aesir" link
 - [X] Make `Dockerfile` more env friendly
 - [X] Add ttl to aesir form in the UI
-- [ ] Add wrong attempts to aesirs
+- [X] Add wrong attempts to aesirs
 - [ ] Add geography/IP filter
 - [ ] Add limit to number of times the link is decrypted
 - [ ] Add incoming aesirs? This will need some thought

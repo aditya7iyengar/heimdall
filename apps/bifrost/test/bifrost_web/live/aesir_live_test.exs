@@ -8,7 +8,7 @@ defmodule BifrostWeb.AesirLiveTest do
     message = "encrypted"
     key = "secret"
 
-    {:ok, uuid} = Asguard.insert(message, key, description, :aes_gcm)
+    {:ok, uuid} = Asguard.insert(message, key, :aes_gcm, %{description: description})
 
     on_exit(fn -> Asguard.delete(uuid) end)
 

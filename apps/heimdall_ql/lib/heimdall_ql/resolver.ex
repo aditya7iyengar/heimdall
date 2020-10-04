@@ -20,8 +20,11 @@ defmodule HeimdallQL.Resolver do
     [
       Map.fetch!(params, :raw),
       Map.fetch!(params, :key),
-      Map.fetch!(params, :description),
       params |> Map.get(:encryption_algo, "aes_gcm") |> String.to_atom(),
+      %{
+        description: Map.fetch!(params, :description),
+        max_attempts: Map.get(params, :max_attempts, :infinite)
+      },
       Map.get(params, :ttl, 5)
     ]
   end

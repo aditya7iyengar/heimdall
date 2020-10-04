@@ -1,5 +1,5 @@
 /*
- * This test file tests basic functionality of heimdall using cypress
+ * This test file tests decryption functionality of heimdall using cypress
  *
  * To run the file execute the command:
  * $(npm bin)/cypress run --headless --browser chrome
@@ -10,16 +10,7 @@ const username = Cypress.env('BIFROST_USER');
 const password = Cypress.env('BIFROST_PASSWORD');
 
 describe('Up and Running', () => {
-    it('visits the root page with http basic auth', () => {
-        cy.visit(`http://localhost:${port}`, {
-            auth: {
-                username: username,
-                password: password
-            }
-        })
-    })
-
-    it('tests the complete life cycle of an aesir', () => {
+    beforeEach(() => {
         cy.visit(`http://localhost:${port}/aesirs/new`, {
             auth: {
                 username: username,
@@ -33,13 +24,14 @@ describe('Up and Running', () => {
         // Give a few milliseconds for the websocket to do its magic
         cy.wait(100)
 
-        cy.get('input[name="aesir[description]"]').invoke('val', 'some description')
+        cy.get('input[name="aesir[description]"]').invoke('val', 'other description')
 
+        cy.get('input[name="aesir[max_attempts]"]').invoke('val', 1)
 
         cy.get('button[type=submit]').click()
 
         // On the main page, search for aesir's description
-        cy.get('input[type=text]').invoke('val', 'some')
+        cy.get('input[type=text]').invoke('val', 'other')
 
         // Give a few milliseconds for the websocket to do its magic
         cy.wait(100)
@@ -53,7 +45,9 @@ describe('Up and Running', () => {
 
         // Give a few milliseconds for the websocket to do its magic
         cy.wait(100)
+    })
 
+    it('tests successful decryption an aesir', () => {
         // Decrypt the information
         cy.get('input[type=password]').invoke('val', 'secret')
 
@@ -66,5 +60,18 @@ describe('Up and Running', () => {
         cy.get('button[class="clippy"]', {
             timeout: 1000
         }).should('contain.text', 'Copy to clipboard')
+    })
+
+    it('tests unsuccessful decryption an aesir', () => {
+        // Try to Decrypt the information with wrong key
+        cy.get('input[type=password]').invoke('val', 'bad-secret')
+
+        // Give a few milliseconds for the websocket to do its magic
+        cy.wait(100)
+
+        cy.get('form').submit()
+
+        // Get button text
+        cy.get('blockquote').should('contain.text', 'Decryption attempts remaining: 0')
     })
 })
