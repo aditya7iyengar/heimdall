@@ -12,7 +12,15 @@ defmodule BifrostWeb.Router do
     plug :protect_from_forgery
 
     plug :put_secure_browser_headers,
-         %{"content-security-policy" => "default-src 'self'"}
+         %{
+           "content-security-policy" => "\
+            default-src 'self';\
+            script-src 'self' 'unsafe-inline' 'unsafe-eval';\
+            style-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com;\
+            img-src 'self' 'unsafe-inline' 'unsafe-eval' data:;\
+            font-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.gstatic.com data:;\
+          "
+         }
 
     plug :basic_auth, Application.compile_env(:bifrost, :basic_auth)
   end
@@ -25,7 +33,15 @@ defmodule BifrostWeb.Router do
     plug :protect_from_forgery
 
     plug :put_secure_browser_headers,
-         %{"content-security-policy" => "default-src 'self'"}
+         %{
+           "content-security-policy" => "\
+            default-src 'self';\
+            script-src 'self' 'unsafe-inline' 'unsafe-eval';\
+            style-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com;\
+            img-src 'self' 'unsafe-inline' 'unsafe-eval' data:;\
+            font-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.gstatic.com data:;\
+          "
+         }
   end
 
   pipeline :graphql_api do

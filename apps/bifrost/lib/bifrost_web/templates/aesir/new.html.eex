@@ -15,7 +15,7 @@
   <%= number_input f, :ttl, value: 5 %>
 
   <%= label f, :max_attempts, "Max Attempts (default: infinite)", class: "control-label" %>
-  <%= number_input f, :max_attempts, value: :infinite, placeholder: "infinite" %>
+  <%= number_input f, :max_attempts, placeholder: "infinite" %>
 
   <br />
   <%= submit "Insert Secure Data" %>
