@@ -43,6 +43,8 @@ defmodule AsguardTest do
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
         max_attempts: :infinite,
         current_attempts: 0,
+        max_decryptions: :infinite,
+        current_decryptions: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.utc_now()
       }
@@ -131,6 +133,8 @@ defmodule AsguardTest do
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
         max_attempts: :infinite,
         current_attempts: 0,
+        max_decryptions: :infinite,
+        current_decryptions: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.utc_now()
       }
@@ -168,6 +172,8 @@ defmodule AsguardTest do
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
         max_attempts: :infinite,
         current_attempts: 0,
+        max_decryptions: :infinite,
+        current_decryptions: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.utc_now()
       }

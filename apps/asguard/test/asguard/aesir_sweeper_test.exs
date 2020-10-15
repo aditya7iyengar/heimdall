@@ -16,6 +16,8 @@ defmodule Asguard.AesirSweeperTest do
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
         max_attempts: :infinite,
         current_attempts: 0,
+        max_decryptions: :infinite,
+        current_decryptions: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.add(DateTime.utc_now(), 10_000, :second)
       }
@@ -27,6 +29,8 @@ defmodule Asguard.AesirSweeperTest do
         uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a305",
         max_attempts: :infinite,
         current_attempts: 0,
+        max_decryptions: :infinite,
+        current_decryptions: 0,
         iat: DateTime.utc_now(),
         exp: DateTime.utc_now()
       }

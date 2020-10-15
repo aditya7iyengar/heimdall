@@ -7,6 +7,8 @@ defmodule Asguard.Aesir do
     encryption_algo
     max_attempts
     current_attempts
+    max_decryptions
+    current_decryptions
     uuid
     iat
     exp
@@ -18,12 +20,11 @@ defmodule Asguard.Aesir do
 
   def from_params(params, ttl \\ 5, iat \\ DateTime.utc_now()) do
     params =
-      params
-      |> Map.put(:uuid, generate_uuid())
+      default_attrs()
+      |> Map.merge(params)
       |> Map.put(:iat, iat)
       |> Map.put(:exp, DateTime.add(iat, ttl * 60, :second))
-      |> Map.put_new(:max_attempts, :infinite)
-      |> Map.put(:current_attempts, 0)
+      |> Map.merge(initialization_attrs())
 
     struct!(__MODULE__, params)
   end
@@ -34,5 +35,20 @@ defmodule Asguard.Aesir do
 
   defp generate_uuid do
     UUID.uuid1()
+  end
+
+  defp initialization_attrs do
+    %{
+      uuid: generate_uuid(),
+      current_attempts: 0,
+      current_decryptions: 0
+    }
+  end
+
+  defp default_attrs do
+    %{
+      max_attempts: :infinite,
+      max_decryptions: :infinite
+    }
   end
 end
