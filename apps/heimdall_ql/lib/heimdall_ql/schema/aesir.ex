@@ -30,6 +30,7 @@ defmodule HeimdallQL.Schema.Aesir do
       arg(:encryption_algo, :string)
       arg(:ttl, :integer)
       arg(:max_attempts, :integer)
+      arg(:max_decryptions, :integer)
 
       resolve(&Resolver.create_aesir/3)
     end
@@ -42,5 +43,9 @@ defmodule HeimdallQL.Schema.Aesir do
     field(:exp, :datetime)
     field(:iat, :datetime)
     field(:uuid, :string)
+    field(:current_attempts, :integer)
+    field(:max_attempts, :integer)
+    field(:current_encryptions, :integer)
+    field(:max_encryptions, :integer)
   end
 end
