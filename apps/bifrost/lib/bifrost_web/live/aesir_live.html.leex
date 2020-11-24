@@ -10,27 +10,33 @@
       <input type="hidden" name="uuid" value="<%= aesir.uuid %>">
     </form>
 
-    <blockquote>
-      <p><%= aesir.description %></p>
+    <p><%= aesir.description %></p>
 
-      <%= if aesir.max_attempts != :infinite do %>
-        <p>Decryption attempts remaining: <%= aesir.max_attempts - aesir.current_attempts %></p>
-      <% end %>
+    <%= if aesir.max_attempts != :infinite do %>
+      <p>Decryption attempts remaining: <%= aesir.max_attempts - aesir.current_attempts %></p>
+    <% end %>
 
-      <br />
-      <em>Encrypted using: <%= aesir.encryption_algo %></em>
-    </blockquote>
+    <br />
+    <em>Encrypted using: <%= aesir.encryption_algo %></em>
 
   <% {:ok, decrypted, aesir} -> %>
     <h4> Showing Secure Data </h2>
 
-    <blockquote>
       <p><%= aesir.description %></p>
 
       <br />
 
-      <button class="clippy" data-clipboard-text="<%= decrypted %>">
+      <%= if @show do %>
+        <blockquote>
+          <div style="white-space: pre-wrap"><%= decrypted %></div>
+        </blockquote>
+        <button phx-click="hide">Hide</button>
+      <% else %>
+        <button phx-click="show">Show</button>
+      <% end %>
+      <br />
+
+      <button class="clippy" phx-click="hide" data-clipboard-text="<%= decrypted %>">
           Copy to clipboard
       </button>
-    </blockquote>
 <% end %>
