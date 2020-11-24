@@ -78,4 +78,29 @@ defmodule BifrostWeb.AesirControllerTest do
       assert conn.private.plug_session["phoenix_flash"]["error"] =~ "Error"
     end
   end
+
+  describe "delete/2" do
+    test "deletes an Aesir from Asguard and redirects to root", %{auth_conn: conn} do
+      {:ok, uuid} =
+        Asguard.insert(
+          "test",
+          "test",
+          :aes_gcm,
+          %{description: "description"}
+        )
+
+      conn =
+        delete(
+          conn,
+          Routes.aesir_path(conn, :delete, uuid)
+        )
+
+      on_exit(fn ->
+        Asguard.delete(uuid)
+      end)
+
+      assert html_response(conn, 302) =~ "redirected"
+      assert conn.private.plug_session["phoenix_flash"]["info"] =~ "Deleted"
+    end
+  end
 end

@@ -26,17 +26,16 @@
 <script>
   let rawMask = document.getElementById("aesir_raw_mask")
   let rawValue = document.getElementById("aesir_raw")
-  let tempValue = ""
 
-  rawMask.addEventListener("keydown", _event => {
-    rawMask.value = tempValue
+  rawMask.addEventListener("blur", _event => {
+    console.log(rawMask.value)
+    rawValue.value = rawMask.value
+    value = rawMask.value.replaceAll(/./g, "*")
+    console.log(rawMask.value)
+    rawMask.value = value
   })
 
-  rawMask.addEventListener("keyup", _event => {
-    rawValue.value = rawMask.value
-    tempValue = rawValue.value
-
-    value = rawMask.value.replaceAll(/./g, "*")
-    rawMask.value = value
+  rawMask.addEventListener("focus", _event => {
+    rawMask.value = rawValue.value
   })
 </script>
