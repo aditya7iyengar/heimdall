@@ -1,6 +1,8 @@
 <%= form_for :aesir, Routes.aesir_path(BifrostWeb.Endpoint, :create), fn f -> %>
   <%= label f, :raw, class: "control-label" %>
-  <%= password_input f, :raw %>
+  <%= textarea f, :raw_mask %>
+
+  <%= textarea f, :raw, hidden: true %>
 
   <%= label f, :key, class: "control-label" %>
   <%= password_input f, :key %>
@@ -20,3 +22,21 @@
   <br />
   <%= submit "Insert Secure Data" %>
 <% end %>
+
+<script>
+  let rawMask = document.getElementById("aesir_raw_mask")
+  let rawValue = document.getElementById("aesir_raw")
+  let tempValue = ""
+
+  rawMask.addEventListener("keydown", _event => {
+    rawMask.value = tempValue
+  })
+
+  rawMask.addEventListener("keyup", _event => {
+    rawValue.value = rawMask.value
+    tempValue = rawValue.value
+
+    value = rawMask.value.replaceAll(/./g, "*")
+    rawMask.value = value
+  })
+</script>
