@@ -33,6 +33,10 @@ defmodule Asguard.Aesir do
     %__MODULE__{aesir | current_attempts: current_attempts + 1}
   end
 
+  def add_decryption(%__MODULE__{current_decryptions: current_decryptions} = aesir) do
+    %__MODULE__{aesir | current_decryptions: current_decryptions + 1}
+  end
+
   defp generate_uuid do
     UUID.uuid1()
   end

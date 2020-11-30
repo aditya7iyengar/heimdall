@@ -42,6 +42,7 @@ defmodule Asguard do
     with aesir when not is_nil(aesir) <- GenServer.call(__MODULE__, {:get, uuid}),
          true <- decryption_attempts_remaining?(aesir),
          d when d != :error <- Encryption.decrypt(aesir.encrypted, key, aesir.encryption_algo) do
+      maybe_add_decryption(uuid)
       {:ok, d, aesir}
     else
       nil ->
@@ -56,12 +57,16 @@ defmodule Asguard do
     end
   end
 
-  defp decryption_attempts_remaining?(%{max_attempts: :infinite}), do: true
-
   defp decryption_attempts_remaining?(aesir) do
-    %{max_attempts: max_attempts, current_attempts: current_attempts} = aesir
+    %Aesir{
+      max_attempts: max_attempts,
+      current_attempts: current_attempts,
+      max_decryptions: max_decryptions,
+      current_decryptions: current_decryptions
+    } = aesir
 
-    max_attempts > current_attempts
+    (max_decryptions == :infinite || max_decryptions > current_decryptions) &&
+      (max_attempts == :infinite || max_attempts > current_attempts)
   end
 
   defp maybe_add_attempt(uuid) do
@@ -69,6 +74,17 @@ defmodule Asguard do
       __MODULE__
       |> GenServer.call({:get, uuid})
       |> Aesir.add_attempt()
+
+    # TODO: Replace with update function
+    delete(uuid)
+    GenServer.call(__MODULE__, {:insert, aesir})
+  end
+
+  defp maybe_add_decryption(uuid) do
+    aesir =
+      __MODULE__
+      |> GenServer.call({:get, uuid})
+      |> Aesir.add_decryption()
 
     # TODO: Replace with update function
     delete(uuid)

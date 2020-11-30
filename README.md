@@ -131,7 +131,7 @@ is already shared.
 - [X] Add delete aesir action
 - [ ] Add geography/IP filter
 - [X] Add show/hide key button
-- [ ] Add limit to number of times the link is decrypted
+- [X] Add limit to number of times the link is decrypted
 - [ ] Add incoming aesirs? This will need some thought
 - [ ] Add better Dockerfile w/ releases
 - [X] Add an API endpoint for adding aesirs
