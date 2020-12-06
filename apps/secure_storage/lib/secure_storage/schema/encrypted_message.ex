@@ -55,46 +55,47 @@ defmodule SecureStorage.Schema.EncryptedMessage do
 
   schema "encrypted_messages" do
     # This is for searching and is indexed
-    field :short_description, :string
+    field(:short_description, :string)
 
     # Bigger non-indexed description
-    field :description, :string
+    field(:description, :string)
 
     # Password hint for decryption
-    field :password_hint, :string
+    field(:password_hint, :string)
 
     # Algorithm used to encrypt the message
-    field :encryption_algo, Ecto.Enum,
+    field(:encryption_algo, Ecto.Enum,
       values: @encryption_algos,
       default: :aes_gcm
+    )
 
     # Encrypted text
-    field :txt, :string
+    field(:txt, :string)
 
     # Max unsuccessful decryption attempts
-    field :max_attempts, :integer, default: 999
+    field(:max_attempts, :integer, default: 999)
 
     # Max number of times decrypted and read
-    field :max_reads, :integer, default: 999
+    field(:max_reads, :integer, default: 999)
 
     # Timestamps for encrypted at and expiration at
-    field :enc_at, :utc_datetime
-    field :exp_at, :utc_datetime, default: @default_exp_at
+    field(:enc_at, :utc_datetime)
+    field(:exp_at, :utc_datetime, default: @default_exp_at)
 
     # State of the message
-    field :state, Ecto.Enum, values: @states, default: :new
+    field(:state, Ecto.Enum, values: @states, default: :new)
 
     # Stores information regarding unsuccessful attempts
     embeds_many :attempts, Attempt do
-      field :ip, :string
-      field :at, :utc_datetime
-      field :failure_reason, :string
+      field(:ip, :string)
+      field(:at, :utc_datetime)
+      field(:failure_reason, :string)
     end
 
     # Stores information regarding reads
     embeds_many :reads, Read do
-      field :ip, :string
-      field :at, :utc_datetime
+      field(:ip, :string)
+      field(:at, :utc_datetime)
     end
 
     timestamps()
