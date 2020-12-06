@@ -21,6 +21,8 @@ defmodule Heimdall.MixProject do
 
   defp deps do
     [
+      {:credo, "~> 1.5.1", only: :dev},
+      {:ecto, "~> 3.5.5"},
       {:excoveralls, "~> 0.13.2", only: :test}
     ]
   end
