@@ -1,5 +1,9 @@
 use Mix.Config
 
+config :secure_storage,
+  ecto_repos: [SecureStorage.Repo],
+  generators: [binary_id: true]
+
 # Configures the endpoint
 config :bifrost, BifrostWeb.Endpoint,
   url: [host: "localhost"],
