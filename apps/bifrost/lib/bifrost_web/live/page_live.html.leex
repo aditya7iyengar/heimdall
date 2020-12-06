@@ -13,6 +13,7 @@
     <tr>
       <td><%= description %></td>
       <td><%= link(uuid, to: Routes.aesir_path(BifrostWeb.Endpoint, :show, uuid), class: "aesir-link") %></td>
+      <td><%= link("Delete", to: Routes.aesir_path(BifrostWeb.Endpoint, :delete, uuid), class: "button is-small is-danger", method: :delete, data: [confirm: "Confirm deleting Aesir?"]) %></td>
     </tr>
   <% end %>
   </tbody>

@@ -13,6 +13,20 @@ defmodule BifrostWeb.AesirController do
     |> redirect(to: "/")
   end
 
+  def delete(conn, %{"id" => uuid}) do
+    case Asguard.delete(uuid) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "Deleted aesir #{uuid}")
+        |> redirect(to: "/")
+
+      {:error, :not_found} ->
+        conn
+        |> put_flash(:error, "Cannot find aesir with id: #{uuid}")
+        |> redirect(to: "/")
+    end
+  end
+
   # TODO: Move to someplace else
   defp parse_aesir_args(aesir_params) do
     encryption_algo =

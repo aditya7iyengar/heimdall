@@ -72,7 +72,8 @@ defmodule AsguardTest do
 
       params = %{
         description: "Description",
-        max_attempts: 1
+        max_attempts: 1,
+        max_decryptions: 5
       }
 
       {:ok, uuid} = @module.insert(txt, "key", :aes_gcm, params)
@@ -90,7 +91,7 @@ defmodule AsguardTest do
       assert aesir.__struct__ == @module.Aesir
     end
 
-    test "updates atttempts and returns error when decryption fails",
+    test "updates attempts and returns error when decryption fails",
          %{uuid: uuid} do
       {:ok, aesir} = @module.get_encrypted(uuid)
       assert aesir.current_attempts == 0
@@ -112,6 +113,37 @@ defmodule AsguardTest do
 
       {:ok, aesir} = @module.get_encrypted(uuid)
       assert aesir.current_attempts == aesir.max_attempts
+
+      {status, error} = @module.get(uuid, "key")
+
+      assert status == :error
+      assert error == :no_attempts_remaining
+    end
+
+    test "updates decryptions and returns error when decryption fails",
+         %{uuid: uuid} do
+      {:ok, aesir} = @module.get_encrypted(uuid)
+      old_decryptions = aesir.current_decryptions
+
+      @module.get(uuid, "key")
+
+      {:ok, aesir} = @module.get_encrypted(uuid)
+      new_decryptions = aesir.current_decryptions
+
+      assert new_decryptions == old_decryptions + 1
+    end
+
+    test "when max_decryptions have been met, returns error", %{uuid: uuid} do
+      {:ok, old_aesir} = @module.get_encrypted(uuid)
+      new_aesir = %Asguard.Aesir{old_aesir | current_decryptions: old_aesir.max_decryptions}
+
+      @module.delete(old_aesir.uuid)
+      GenServer.call(@module, {:insert, new_aesir})
+
+      on_exit(fn ->
+        @module.delete(new_aesir.uuid)
+        GenServer.call(@module, {:insert, old_aesir})
+      end)
 
       {status, error} = @module.get(uuid, "key")
 

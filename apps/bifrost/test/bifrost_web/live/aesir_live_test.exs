@@ -5,7 +5,7 @@ defmodule BifrostWeb.AesirLiveTest do
 
   setup %{unauth_conn: conn} do
     description = "Some Description"
-    message = "encrypted"
+    message = "supersecretmessage"
     key = "secret"
 
     {:ok, uuid} =
@@ -66,6 +66,29 @@ defmodule BifrostWeb.AesirLiveTest do
 
       html = render_submit(page_live, :decrypt, %{"key" => key, "uuid" => uuid})
       assert html =~ "No Attempts remaining"
+    end
+  end
+
+  describe "event: show/hide" do
+    test "with decrypted show/hide", %{conn: conn, uuid: uuid, key: key} do
+      {:ok, page_live, _disconnected_html} = live(conn, "/aesirs/#{uuid}")
+
+      html = render_submit(page_live, :decrypt, %{"key" => key, "uuid" => uuid})
+
+      assert html =~ "Showing Secure Data"
+
+      # Shows proper buttons
+      assert html =~ "Show"
+      refute html =~ "Hide"
+
+      html = render_click(page_live, :show)
+
+      assert html =~ "Hide"
+
+      html = render_click(page_live, :hide)
+
+      assert html =~ "Show"
+      refute html =~ "Hide"
     end
   end
 end

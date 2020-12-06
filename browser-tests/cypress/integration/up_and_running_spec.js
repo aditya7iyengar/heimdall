@@ -27,7 +27,9 @@ describe('Up and Running', () => {
             }
         })
 
-        cy.get('input[name="aesir[raw]"]').invoke('val', 'Raw value')
+        cy.get('textarea[name="aesir[raw_mask]"]').invoke('val', 'Raw value')
+
+        cy.get('textarea[name="aesir[raw]"]').invoke('val', 'Raw value')
 
         cy.get('input[name="aesir[key]"]').invoke('val', 'secret')
         // Give a few milliseconds for the websocket to do its magic

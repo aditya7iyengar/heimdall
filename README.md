@@ -127,12 +127,15 @@ is already shared.
 - [X] Make `Dockerfile` more env friendly
 - [X] Add ttl to aesir form in the UI
 - [X] Add wrong attempts to aesirs
+- [X] Make aesirs raw value textarea (and still password somehow)
+- [X] Add delete aesir action
 - [ ] Add geography/IP filter
-- [ ] Add limit to number of times the link is decrypted
+- [X] Add show/hide key button
+- [X] Add limit to number of times the link is decrypted
 - [ ] Add incoming aesirs? This will need some thought
+- [ ] Add better Dockerfile w/ releases
 - [X] Add an API endpoint for adding aesirs
 - [ ] Add a `cli` app that talks to the API
-- [ ] Add show/hide key button
 - [X] Add notes for `ngrok` integration
 - [ ] Deploy w/ `k8s`
 - [ ] Add CD
