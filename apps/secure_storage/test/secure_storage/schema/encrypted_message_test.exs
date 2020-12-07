@@ -39,10 +39,10 @@ defmodule SecureStorage.Schema.EncryptedMessageTest do
 
     test "validates inclusion of encryption_algo", %{changeset: changeset} do
       assert validates_inclusion?(
-        changeset,
-        :encryption_algo,
-        @encryption_algos
-      )
+               changeset,
+               :encryption_algo,
+               @encryption_algos
+             )
     end
 
     test "validates inclusion of state", %{changeset: changeset} do
@@ -55,18 +55,20 @@ defmodule SecureStorage.Schema.EncryptedMessageTest do
 
     test "validates presence of fields in attempt", %{changeset: changeset} do
       [attempt_changeset] = changeset.changes.attempts
+
       assert validates_required?(
-        attempt_changeset,
-        [:ip, :at, :failure_reason]
-      )
+               attempt_changeset,
+               [:ip, :at, :failure_reason]
+             )
     end
 
     test "validates presence of fields in read", %{changeset: changeset} do
       [read_changeset] = changeset.changes.reads
+
       assert validates_required?(
-        read_changeset,
-        [:ip, :at]
-      )
+               read_changeset,
+               [:ip, :at]
+             )
     end
 
     test "defaults max_attempts to 999", %{changeset: changeset} do

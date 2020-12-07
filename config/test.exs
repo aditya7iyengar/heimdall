@@ -13,7 +13,6 @@ config :secure_storage, SecureStorage.Repo,
   timeout: :timer.seconds(60),
   ownership_timeout: :timer.seconds(90)
 
-
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :bifrost, BifrostWeb.Endpoint,
