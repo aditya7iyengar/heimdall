@@ -28,6 +28,7 @@ defmodule SecureStorage.MixProject do
 
   def application do
     [
+      mod: {SecureStorage.Application, []},
       extra_applications: [:logger]
     ]
   end

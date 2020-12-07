@@ -102,7 +102,7 @@ defmodule SecureStorage.Schema.EncryptedMessage do
   end
 
   @impl true
-  def changeset(%__MODULE__{} = struct, params) do
+  def changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, @castable_fields)
     |> cast_embed(:attempts, with: &attempt_changeset/2)
@@ -110,18 +110,18 @@ defmodule SecureStorage.Schema.EncryptedMessage do
     |> validate_required(@required_fields)
     |> validate_inclusion(:state, @states)
     |> validate_inclusion(:encryption_algo, @encryption_algos)
-    |> validate_length(:short_description, max: 100, count: :codepoints)
+    |> validate_length(:short_description, max: 100)
   end
 
   defp attempt_changeset(attempt, params) do
     attempt
-    |> cast(params, [:ip, :iat, :failure_reason])
+    |> cast(params, [:ip, :at, :failure_reason])
     |> validate_required([:ip, :at, :failure_reason])
   end
 
   defp read_changeset(read, params) do
     read
-    |> cast(params, [:ip, :iat])
+    |> cast(params, [:ip, :at])
     |> validate_required([:ip, :at])
   end
 end

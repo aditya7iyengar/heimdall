@@ -5,7 +5,7 @@ defmodule SecureStorage.Application do
 
   def start(_type, _args) do
     children = [
-      {SecureStorage.Repo, []}
+      SecureStorage.Repo
     ]
 
     opts = [strategy: :one_for_one, name: SecureStorage.Supervisor]
