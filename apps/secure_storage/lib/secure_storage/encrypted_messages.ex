@@ -27,14 +27,16 @@ defmodule SecureStorage.EncryptedMessages do
   end
 
   def encrypt_message(message, raw, key, params) do
-    with {:ok, txt} <- encrypt(message, raw, key),
+    encryption_result = encrypt(message, raw, key)
+
+    with {:encrypt, txt} when txt != :error <- {:encrypt, encryption_result},
          changeset = %{valid?: false} <- add_encrypted(message, txt, params) do
       Repo.insert(changeset)
     else
       changeset = %{valid?: false} ->
         {:error, changeset}
 
-      {:error, :error_in_encryption} ->
+      {:encrypt, :error} ->
         changeset =
           params
           |> change_message()
