@@ -3,6 +3,7 @@ defmodule SecureStorage.EncryptedMessages do
   Simpler interface to manage encrypted messages
   """
   import Ecto.Changeset
+  import Ecto.Query
 
   alias SecureStorage.Encryption.{AesGcm, Plain}
   alias SecureStorage.Repo
@@ -44,6 +45,14 @@ defmodule SecureStorage.EncryptedMessages do
 
         {:error, changeset}
     end
+  end
+
+  def stale_or_expired_messages do
+    stale_or_expired_states = ~w(expired no_attempts_left no_reads_left)a
+
+    EncryptedMessage
+    |> where([m], m.state in ^stale_or_expired_states)
+    |> Repo.all()
   end
 
   defp add_encrypted(message, txt, params) do

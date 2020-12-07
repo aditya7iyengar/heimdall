@@ -1,6 +1,9 @@
 defmodule SecureStorage.EncryptedMessagesTest do
   use SecureStorage.DataCase
 
+  alias SecureStorage.Repo
+  alias SecureStorage.Schema.EncryptedMessage
+
   @module SecureStorage.EncryptedMessages
 
   describe "insert_new_message/1" do
@@ -87,6 +90,55 @@ defmodule SecureStorage.EncryptedMessagesTest do
       {:error, changeset} = @module.encrypt_message(message, raw, key, valid_params)
 
       refute changeset.valid?
+    end
+  end
+
+  describe "stale_or_expired_messaages/0" do
+    setup do
+      expired_message =
+        %EncryptedMessage{state: :expired, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{txt: "txt", enc_at: DateTime.utc_now()})
+        |> Repo.insert!()
+
+      no_attempts_left_message =
+        %EncryptedMessage{state: :no_attempts_left, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{txt: "txt", enc_at: DateTime.utc_now()})
+        |> Repo.insert!()
+
+      no_reads_left_message =
+        %EncryptedMessage{state: :no_reads_left, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{txt: "txt", enc_at: DateTime.utc_now()})
+        |> Repo.insert!()
+
+      new_message =
+        %EncryptedMessage{state: :new, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{})
+        |> Repo.insert!()
+
+      {
+        :ok,
+        expired_message: expired_message,
+        no_attempts_left_message: no_attempts_left_message,
+        no_reads_left_message: no_reads_left_message,
+        new_message: new_message
+      }
+    end
+
+    test "includes only messages with stale states", context do
+      %{
+        expired_message: expired_message,
+        no_attempts_left_message: no_attempts_left_message,
+        no_reads_left_message: no_reads_left_message,
+        new_message: new_message
+      } = context
+
+      messages = @module.stale_or_expired_messages()
+
+      assert expired_message in messages
+      assert no_attempts_left_message in messages
+      assert no_reads_left_message in messages
+
+      refute new_message in messages
     end
   end
 end
