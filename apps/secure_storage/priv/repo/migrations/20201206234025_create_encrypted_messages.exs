@@ -11,17 +11,17 @@ defmodule SecureStorage.Repo.Migrations.CreateEncryptedMessages do
 
       add :password_hint, :string
 
-      add :encrypted_algo, :string, default: "aes_gcm"
+      add :encryption_algo, :string, default: "aes_gcm"
 
-      add :txt, :string, null: false
+      add :txt, :string
 
       add :max_attempts, :integer, default: 999
 
       add :max_reads, :integer, default: 999
 
-      add :enc_at, :utc_datetime, null: false
+      add :enc_at, :utc_datetime
 
-      add :exp_at, :utc_datetime, null: false
+      add :exp_at, :utc_datetime
 
       add :state, :string, default: "new"
 

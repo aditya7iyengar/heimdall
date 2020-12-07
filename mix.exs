@@ -5,6 +5,7 @@ defmodule Heimdall.MixProject do
 
   def project do
     [
+      aliases: aliases(),
       apps_path: "apps",
       deps: deps(),
       preferred_cli_env: [
@@ -23,6 +24,14 @@ defmodule Heimdall.MixProject do
     [
       {:credo, "~> 1.5.1", only: :dev},
       {:excoveralls, "~> 0.13.2", only: :test}
+    ]
+  end
+
+  defp aliases do
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.reset", "test"]
     ]
   end
 end

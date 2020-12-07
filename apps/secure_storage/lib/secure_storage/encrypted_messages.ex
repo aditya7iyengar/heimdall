@@ -30,8 +30,8 @@ defmodule SecureStorage.EncryptedMessages do
     encryption_result = encrypt(message, raw, key)
 
     with {:encrypt, txt} when txt != :error <- {:encrypt, encryption_result},
-         changeset = %{valid?: false} <- add_encrypted(message, txt, params) do
-      Repo.insert(changeset)
+         changeset = %{valid?: true} <- add_encrypted(message, txt, params) do
+      Repo.insert_or_update(changeset)
     else
       changeset = %{valid?: false} ->
         {:error, changeset}
@@ -47,23 +47,24 @@ defmodule SecureStorage.EncryptedMessages do
   end
 
   defp add_encrypted(message, txt, params) do
-    ttl = Map.get(params, :ttl, @default_ttl) * 60
+    ttl = Map.get(params, "ttl", @default_ttl) * 60
     enc_at = DateTime.utc_now()
     exp_at = DateTime.add(enc_at, ttl, :second)
 
     params =
       params
-      |> Map.drop([:ttl])
-      |> Map.put(:exp_at, exp_at)
-      |> Map.put(:state, :new)
-      |> Map.put_new(:txt, txt)
+      |> Map.drop(["ttl"])
+      |> Map.put("enc_at", enc_at)
+      |> Map.put("exp_at", exp_at)
+      |> Map.put("state", "encrypted")
+      |> Map.put_new("txt", txt)
 
     EncryptedMessage.changeset(message, params)
   end
 
   defp change_message(params) do
     params
-    |> Map.put(:state, :new)
+    |> Map.put("state", "new")
     |> EncryptedMessage.changeset()
   end
 

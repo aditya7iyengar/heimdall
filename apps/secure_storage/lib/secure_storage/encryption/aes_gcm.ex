@@ -5,6 +5,8 @@ defmodule SecureStorage.Encryption.AesGcm do
 
   @behaviour SecureStorage.Encryption
 
+  @crypt "AES256GCM"
+
   @impl true
   def encrypt(raw, key) do
     secret_key = :crypto.hash(:md5, key)
@@ -15,7 +17,7 @@ defmodule SecureStorage.Encryption.AesGcm do
         :aes_gcm,
         secret_key,
         initialization_vector,
-        {"AES256GCM", raw, 16}
+        {@crypt, raw, 16}
       )
 
     :base64.encode(initialization_vector <> ciphertag <> ciphertext)
@@ -32,7 +34,7 @@ defmodule SecureStorage.Encryption.AesGcm do
       :aes_gcm,
       secret_key,
       initialization_vector,
-      {"AES256GCM", ciphertext, ciphertag}
+      {@crypt, ciphertext, ciphertag}
     )
   end
 end

@@ -45,13 +45,14 @@ defmodule SecureStorage.Schema.EncryptedMessage do
     state
   )a
 
-  @required_fields ~w(
+  @required_fields_encrypted ~w(
     short_description
-    password_hint
     txt
     enc_at
     exp_at
   )a
+
+  @required_fields_new ~w(short_description)a
 
   schema "encrypted_messages" do
     # This is for searching and is indexed
@@ -107,10 +108,10 @@ defmodule SecureStorage.Schema.EncryptedMessage do
     |> cast(params, @castable_fields)
     |> cast_embed(:attempts, with: &attempt_changeset/2)
     |> cast_embed(:reads, with: &read_changeset/2)
-    |> validate_required(@required_fields)
     |> validate_inclusion(:state, @states)
     |> validate_inclusion(:encryption_algo, @encryption_algos)
     |> validate_length(:short_description, max: 100)
+    |> validate_state_fields_parity()
   end
 
   defp attempt_changeset(attempt, params) do
@@ -123,5 +124,14 @@ defmodule SecureStorage.Schema.EncryptedMessage do
     read
     |> cast(params, [:ip, :at])
     |> validate_required([:ip, :at])
+  end
+
+  defp validate_state_fields_parity(changeset) do
+    %__MODULE__{state: state} = apply_changes(changeset)
+
+    case state do
+      :new -> validate_required(changeset, @required_fields_new)
+      _ -> validate_required(changeset, @required_fields_encrypted)
+    end
   end
 end

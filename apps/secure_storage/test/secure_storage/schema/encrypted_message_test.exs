@@ -3,13 +3,14 @@ defmodule SecureStorage.Schema.EncryptedMessageTest do
 
   @schema SecureStorage.Schema.EncryptedMessage
 
-  @required_fields ~w(
+  @required_fields_encrypted ~w(
     short_description
-    password_hint
     txt
     enc_at
     exp_at
   )a
+
+  @required_fields_new ~w(short_description)a
 
   @encryption_algos ~w(
     plain
@@ -27,14 +28,20 @@ defmodule SecureStorage.Schema.EncryptedMessageTest do
   )a
 
   setup_all do
-    changeset = @schema.changeset(%{attempts: [%{}], reads: [%{}]})
+    encrypted_changeset = @schema.changeset(%{state: :encrypted, attempts: [%{}], reads: [%{}]})
 
-    {:ok, changeset: changeset}
+    changeset = @schema.changeset(%{state: :new, attempts: [%{}], reads: [%{}]})
+
+    {:ok, encrypted_changeset: encrypted_changeset, changeset: changeset}
   end
 
   describe "changeset/2" do
-    test "validates requirement of important fields", %{changeset: changeset} do
-      assert validates_required?(changeset, @required_fields)
+    test "validates req for encrypted", %{encrypted_changeset: changeset} do
+      assert validates_required?(changeset, @required_fields_encrypted)
+    end
+
+    test "validates req for new", %{changeset: changeset} do
+      assert validates_required?(changeset, @required_fields_new)
     end
 
     test "validates inclusion of encryption_algo", %{changeset: changeset} do
