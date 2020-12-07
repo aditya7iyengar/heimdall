@@ -8,7 +8,11 @@ config :secure_storage,
 config :bifrost, BifrostWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "RNWG6N61vLAFY86jkT1kLNex7OQOBjUIaTVHK2mfcRTSprNEcYDuJesW3lR4Yizg",
-  render_errors: [view: BifrostWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    view: BifrostWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: Bifrost.PubSub,
   live_view: [signing_salt: "AukjfSqM"]
 
