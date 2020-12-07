@@ -28,7 +28,7 @@ config :bifrost, Bifrost.Scheduler,
   debug_logging: false,
   jobs: [
     # Every minute
-    {"* * * * *", {Asguard.AesirSweeper, :run, []}}
+    {"* * * * *", {SecureStorage.Sweeper, :run, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom
