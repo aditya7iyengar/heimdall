@@ -1,84 +1,65 @@
 defmodule HeimdallQL.ResolverTest do
   use ExUnit.Case
 
+  alias SecureStorage.Repo
+  alias SecureStorage.Schema.EncryptedMessage
+
   @module HeimdallQL.Resolver
 
-  describe "list_aesirs/3" do
+  setup do
+    Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+  end
+
+  describe "list_encrypted_messages/3" do
     setup do
-      Asguard.start_link([])
+      encrypted_message =
+        %EncryptedMessage{state: :new, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{})
+        |> Repo.insert!()
 
-      {:ok, uuid} =
-        Asguard.insert(
-          "raw",
-          :key,
-          :plaintext,
-          %{description: "Description"}
-        )
-
-      {:ok, aesir} = Asguard.get_encrypted(uuid)
-
-      on_exit(fn ->
-        Asguard.delete(uuid)
-      end)
-
-      {:ok, aesir: aesir}
+      {:ok, encrypted_message: encrypted_message}
     end
 
-    test "lists aesirs", %{aesir: aesir} do
-      {status, list} = @module.list_aesirs(nil, nil, nil)
+    test "lists encrypted_messages", %{encrypted_message: encrypted_message} do
+      {status, list} = @module.list_encrypted_messages(nil, nil, nil)
 
       assert status == :ok
-      assert list == [aesir]
+      assert list == [encrypted_message]
     end
   end
 
-  describe "get_aesir/3" do
+  describe "get_encrypted_message/3" do
     setup do
-      Asguard.start_link([])
+      encrypted_message =
+        %EncryptedMessage{state: :new, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{})
+        |> Repo.insert!()
 
-      {:ok, uuid} =
-        Asguard.insert(
-          "raw",
-          :key,
-          :plaintext,
-          %{description: "Description"}
-        )
-
-      {:ok, aesir} = Asguard.get_encrypted(uuid)
-
-      on_exit(fn ->
-        Asguard.delete(uuid)
-      end)
-
-      {:ok, aesir: aesir}
+      {:ok, encrypted_message: encrypted_message}
     end
 
-    test "gets aesir", %{aesir: aesir} do
-      {status, fetched} = @module.get_aesir(nil, %{uuid: aesir.uuid}, nil)
+    test "gets encrypted_message", %{encrypted_message: encrypted_message} do
+      {status, fetched} = @module.get_encrypted_message(nil, %{id: encrypted_message.id}, nil)
 
       assert status == :ok
-      assert fetched == aesir
+      assert fetched == encrypted_message
     end
   end
 
-  describe "create_aesirs/3" do
-    test "creates aesir" do
+  describe "create_encrypted_messages/3" do
+    test "creates encrypted_message" do
       params = %{
         raw: "raw",
         key: :key,
-        description: "Description",
-        encryption_algo: "plaintext"
+        short_description: "Description",
+        encryption_algo: "plain"
       }
 
-      {status, created} = @module.create_aesir(nil, params, nil)
-
-      on_exit(fn ->
-        Asguard.delete(created.uuid)
-      end)
+      {status, created} = @module.create_encrypted_message(nil, params, nil)
 
       assert status == :ok
-      assert created.encrypted == params.raw
-      assert created.description == params.description
+      assert created.txt == params.raw
+      assert created.short_description == params.short_description
       assert to_string(created.encryption_algo) == params.encryption_algo
     end
   end
