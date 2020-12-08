@@ -55,6 +55,20 @@ defmodule SecureStorage.EncryptedMessages do
     |> Repo.all()
   end
 
+  def search_messages(term) do
+    EncryptedMessage
+    |> where([m], ilike(m.short_description, ^term))
+    |> Repo.all()
+  end
+
+  def get_message(id) do
+    Repo.get(EncryptedMessage, id)
+  end
+
+  def list_messages do
+    Repo.all(EncryptedMessage)
+  end
+
   defp add_encrypted(message, txt, params) do
     ttl = Map.get(params, "ttl", @default_ttl) * 60
     enc_at = DateTime.utc_now()
