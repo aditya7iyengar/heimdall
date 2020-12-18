@@ -9,15 +9,19 @@ defmodule SecureStorage.EncryptedMessages do
   alias SecureStorage.Repo
   alias SecureStorage.Schema.EncryptedMessage
 
+  @behaviour SecureStorage.EncryptedMessagesContext
+
   # 5 mins (300 seconds) default TTL
   @default_ttl 5
 
+  @impl true
   def insert_new_message(params) do
     params
     |> change_message()
     |> Repo.insert()
   end
 
+  @impl true
   def insert_encrypted_message(raw, key, params) do
     with changeset = %{valid?: true} <- change_message(params),
          message = apply_changes(changeset) do
@@ -27,6 +31,7 @@ defmodule SecureStorage.EncryptedMessages do
     end
   end
 
+  @impl true
   def encrypt_message(message, raw, key, params) do
     encryption_result = encrypt(message, raw, key)
 
@@ -47,26 +52,52 @@ defmodule SecureStorage.EncryptedMessages do
     end
   end
 
-  def stale_or_expired_messages do
-    stale_or_expired_states = ~w(expired no_attempts_left no_reads_left)a
-
-    EncryptedMessage
-    |> where([m], m.state in ^stale_or_expired_states)
-    |> Repo.all()
-  end
-
+  @impl true
   def search_messages(term) do
     EncryptedMessage
     |> where([m], ilike(m.short_description, ^term))
     |> Repo.all()
   end
 
+  @impl true
   def get_message(id) do
     Repo.get(EncryptedMessage, id)
   end
 
+  @impl true
+  def delete_message(id) do
+    Repo.delete(EncryptedMessage, id)
+  end
+
+  @impl true
   def list_messages do
     Repo.all(EncryptedMessage)
+  end
+
+  @impl true
+  def decrypt_message(message, key) do
+    attempts_remaining = message.max_attempts > Enum.count(message.attempts)
+    reads_remaining = message.max_reads > Enum.count(message.reads)
+
+    with {:attempts, true} <- {:attempts, attempts_remaining},
+         {:reads, true} <- {:reads, reads_remaining} do
+      try do
+        decrypt(message, key)
+      rescue
+        RuntimeError -> {:error, :decryption_error}
+      end
+    else
+      {:attempts, false} -> {:error, :no_attempts_remaining}
+      {:reads, false} -> {:error, :no_reads_remaining}
+    end
+  end
+
+  def stale_or_expired_messages do
+    stale_or_expired_states = ~w(expired no_attempts_left no_reads_left)a
+
+    EncryptedMessage
+    |> where([m], m.state in ^stale_or_expired_states)
+    |> Repo.all()
   end
 
   defp add_encrypted(message, txt, params) do
@@ -97,5 +128,13 @@ defmodule SecureStorage.EncryptedMessages do
 
   defp encrypt(%EncryptedMessage{encryption_algo: :aes_gcm}, raw, key) do
     AesGcm.encrypt(raw, key)
+  end
+
+  defp decrypt(%EncryptedMessage{encryption_algo: :plain} = msg, key) do
+    Plain.decrypt(msg.txt, key)
+  end
+
+  defp decrypt(%EncryptedMessage{encryption_algo: :aes_gcm} = msg, key) do
+    AesGcm.decrypt(msg.txt, key)
   end
 end

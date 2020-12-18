@@ -5,29 +5,32 @@ defmodule BifrostWeb.QLTest do
 
   describe "ql list" do
     setup ctx do
-      Asguard.start_link([])
+      SecureStorage.start_link([])
 
       {:ok, uuid} =
-        Asguard.insert(
+        SecureStorage.insert(
           "raw",
           :key,
           :plaintext,
           %{description: "Description"}
         )
 
-      {:ok, aesir} = Asguard.get_encrypted(uuid)
+      {:ok, encrypted_message} = SecureStorage.get_encrypted(uuid)
 
       on_exit(fn ->
-        Asguard.delete(uuid)
+        SecureStorage.delete(uuid)
       end)
 
-      {:ok, Map.put(ctx, :aesir, aesir)}
+      {:ok, Map.put(ctx, :encrypted_message, encrypted_message)}
     end
 
-    test "lists all aesirs when authorized", %{auth_conn: conn, aesir: aesir} do
+    test "lists all encrypted_messages when authorized", %{
+      auth_conn: conn,
+      encrypted_message: encrypted_message
+    } do
       query = """
       query {
-        aesirs {
+        encrypted_messages {
           description
           encrypted
           encryption_algo
@@ -40,28 +43,28 @@ defmodule BifrostWeb.QLTest do
 
       assert conn.status == 200
 
-      aesirs =
+      encrypted_messages =
         conn.resp_body
         |> Jason.decode!()
         |> Map.get("data")
-        |> Map.get("aesirs")
+        |> Map.get("encrypted_messages")
 
-      assert Enum.count(aesirs) == 1
+      assert Enum.count(encrypted_messages) == 1
 
-      [aesir_response] = aesirs
+      [encrypted_message_response] = encrypted_messages
 
-      assert aesir_response["description"] == aesir.description
-      assert aesir_response["uuid"] == aesir.uuid
-      assert aesir_response["encrypted"] == aesir.encrypted
+      assert encrypted_message_response["description"] == encrypted_message.description
+      assert encrypted_message_response["uuid"] == encrypted_message.uuid
+      assert encrypted_message_response["encrypted"] == encrypted_message.encrypted
 
-      assert aesir_response["encryption_algo"] ==
-               to_string(aesir.encryption_algo)
+      assert encrypted_message_response["encryption_algo"] ==
+               to_string(encrypted_message.encryption_algo)
     end
 
     test "401 when unauthorized", %{unauth_conn: conn} do
       query = """
       query {
-        aesirs {
+        encrypted_messages {
           description
           encrypted
           encryption_algo

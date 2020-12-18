@@ -39,10 +39,11 @@ defmodule SecureStorage.MixProject do
       {:ecto_sql, "~> 3.5.3"},
       {:elixir_uuid, "~> 1.2.1"},
       {:excoveralls, "~> 0.13.2", only: :test},
+      {:mox, "~> 1.0.0", only: :test},
       {:postgrex, "~> 0.15.7"}
     ]
   end
 
-  defp elixirc_paths(e) when e in [:dev, :test], do: ["lib", "test/support"]
+  defp elixirc_paths(e) when e in [:test], do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 end

@@ -7,15 +7,25 @@ defmodule SecureStorage do
 
   alias SecureStorage.EncryptedMessages
 
-  defdelegate insert_new_message(params), to: EncryptedMessages
+  @context Keyword.get(
+             Application.compile_env(:secure_storage, __MODULE__, []),
+             :context,
+             EncryptedMessages
+           )
 
-  defdelegate insert_encrypted_message(raw, key, params), to: EncryptedMessages
+  defdelegate insert_new_message(params), to: @context
 
-  defdelegate encrypt_message(message, raw, key, params), to: EncryptedMessages
+  defdelegate insert_encrypted_message(raw, key, params), to: @context
 
-  defdelegate search_messages(term), to: EncryptedMessages
+  defdelegate encrypt_message(message, raw, key, params), to: @context
 
-  defdelegate get_message(id), to: EncryptedMessages
+  defdelegate search_messages(term), to: @context
 
-  defdelegate list_messages, to: EncryptedMessages
+  defdelegate get_message(id), to: @context
+
+  defdelegate delete_message(id), to: @context
+
+  defdelegate list_messages, to: @context
+
+  defdelegate decrypt_message(message, key), to: @context
 end

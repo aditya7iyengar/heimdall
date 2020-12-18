@@ -1,19 +1,20 @@
 defmodule HeimdallQL.Schema.LoanTypesTest do
   use HeimdallQL.AbsintheCase
 
-  alias SecureStorage.Repo
-  alias SecureStorage.Schema.EncryptedMessage
+  import Mox
 
-  setup do
-    Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-  end
+  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.Schema.EncryptedMessage
 
   describe "encrypted_messages" do
     setup do
       encrypted_message =
         %EncryptedMessage{state: :new, short_description: "desc"}
         |> EncryptedMessage.changeset(%{})
-        |> Repo.insert!()
+        |> Ecto.Changeset.apply_changes()
+
+      stub(Mock, :list_messages, fn -> [encrypted_message] end)
+      stub(Mock, :get_message, fn _ -> encrypted_message end)
 
       {:ok, encrypted_message: encrypted_message}
     end
@@ -78,6 +79,18 @@ defmodule HeimdallQL.Schema.LoanTypesTest do
       raw = "raw"
       key = "key"
       short_description = "desc"
+
+      stub(Mock, :insert_encrypted_message, fn _, _, _ ->
+        {
+          :ok,
+          %EncryptedMessage{
+            state: :encrypted,
+            short_description: "desc",
+            encryption_algo: "aes_gcm",
+            txt: "xyzsada"
+          }
+        }
+      end)
 
       mut = """
       mutation CreateEncryptedMessage {

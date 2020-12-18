@@ -1,6 +1,9 @@
 defmodule HeimdallQL.ResolverTest do
   use ExUnit.Case
 
+  import Mox
+
+  alias EncryptedMessagesMock, as: Mock
   alias SecureStorage.Repo
   alias SecureStorage.Schema.EncryptedMessage
 
@@ -15,7 +18,9 @@ defmodule HeimdallQL.ResolverTest do
       encrypted_message =
         %EncryptedMessage{state: :new, short_description: "desc"}
         |> EncryptedMessage.changeset(%{})
-        |> Repo.insert!()
+        |> Ecto.Changeset.apply_changes()
+
+      stub(Mock, :list_messages, fn -> [encrypted_message] end)
 
       {:ok, encrypted_message: encrypted_message}
     end
@@ -33,7 +38,9 @@ defmodule HeimdallQL.ResolverTest do
       encrypted_message =
         %EncryptedMessage{state: :new, short_description: "desc"}
         |> EncryptedMessage.changeset(%{})
-        |> Repo.insert!()
+        |> Ecto.Changeset.apply_changes()
+
+      stub(Mock, :get_message, fn _ -> encrypted_message end)
 
       {:ok, encrypted_message: encrypted_message}
     end
@@ -54,6 +61,18 @@ defmodule HeimdallQL.ResolverTest do
         short_description: "Description",
         encryption_algo: "plain"
       }
+
+      stub(Mock, :insert_encrypted_message, fn _, _, _ ->
+        {
+          :ok,
+          %EncryptedMessage{
+            state: :encrypted,
+            short_description: "Description",
+            encryption_algo: "plain",
+            txt: "raw"
+          }
+        }
+      end)
 
       {status, created} = @module.create_encrypted_message(nil, params, nil)
 
