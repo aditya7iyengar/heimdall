@@ -37,7 +37,7 @@ defmodule BifrostWeb.EncryptedMessageLive do
          |> put_flash(:error, "No Reads remaining")
          |> assign(message: message, result: nil, show: false)}
 
-      decrypted when is_binary(decrypted) ->
+      {:ok, decrypted} when is_binary(decrypted) ->
         {:noreply,
          socket
          |> put_flash(:info, "Message decrypted and ready to copy to clipboard")

@@ -54,6 +54,8 @@ defmodule SecureStorage.EncryptedMessages do
 
   @impl true
   def search_messages(term) do
+    term = "%#{term}%"
+
     EncryptedMessage
     |> where([m], ilike(m.short_description, ^term))
     |> Repo.all()
@@ -75,20 +77,25 @@ defmodule SecureStorage.EncryptedMessages do
   end
 
   @impl true
-  def decrypt_message(message, key) do
+  def decrypt_message(message, key, ip \\ "none") do
     attempts_remaining = message.max_attempts > Enum.count(message.attempts)
     reads_remaining = message.max_reads > Enum.count(message.reads)
 
     with {:attempts, true} <- {:attempts, attempts_remaining},
-         {:reads, true} <- {:reads, reads_remaining} do
-      try do
-        decrypt(message, key)
-      rescue
-        RuntimeError -> {:error, :decryption_error}
-      end
+         {:reads, true} <- {:reads, reads_remaining},
+         {:decrypt, decrypted} when is_binary(decrypted) <- {:decrypt, decrypt(message, key)} do
+      add_reads!(message, ip)
+      {:ok, decrypted}
     else
-      {:attempts, false} -> {:error, :no_attempts_remaining}
-      {:reads, false} -> {:error, :no_reads_remaining}
+      {:attempts, false} ->
+        {:error, :no_attempts_remaining}
+
+      {:reads, false} ->
+        {:error, :no_reads_remaining}
+
+      {:decrypt, :error} ->
+        add_attempts!(message, ip)
+        {:error, :decryption_error}
     end
   end
 
@@ -143,5 +150,23 @@ defmodule SecureStorage.EncryptedMessages do
       mins when is_binary(mins) -> String.to_integer(mins) * 60
       mins when is_integer(mins) -> mins * 60
     end
+  end
+
+  defp add_attempts!(message, ip) do
+    attempt = %{ip: ip, at: DateTime.utc_now(), failure_reason: "decryption"}
+    attempts = message.attempts |> Enum.map(&Map.from_struct/1)
+
+    message
+    |> EncryptedMessage.changeset(%{"attempts" => [attempt | attempts]})
+    |> Repo.update!()
+  end
+
+  defp add_reads!(message, ip) do
+    read = %{ip: ip, at: DateTime.utc_now()}
+    reads = message.reads |> Enum.map(&Map.from_struct/1)
+
+    message
+    |> EncryptedMessage.changeset(%{"reads" => [read | reads]})
+    |> Repo.update!()
   end
 end

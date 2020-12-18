@@ -21,7 +21,7 @@ defmodule BifrostWeb.EncryptedMessageLiveTest do
     end)
 
     stub(Mock, :decrypt_message, fn
-      _, "valid-key" -> "supersecretmessage"
+      _, "valid-key" -> {:ok, "supersecretmessage"}
       _, "decryption_error" -> {:error, :decryption_error}
       _, "no_attempts_remaining" -> {:error, :no_attempts_remaining}
       _, "no_reads_remaining" -> {:error, :no_reads_remaining}

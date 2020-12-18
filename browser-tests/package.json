@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "cypress:run": "cypress run --headless --browser chrome"
+    "cypress:run": "cypress run --browser chrome"
   }
 }
