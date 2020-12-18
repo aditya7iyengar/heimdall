@@ -7,8 +7,11 @@
   <%= label f, :key, class: "control-label" %>
   <%= password_input f, :key %>
 
+  <%= label f, :short_description, class: "control-label" %>
+  <%= text_input f, :short_description %>
+
   <%= label f, :description, class: "control-label" %>
-  <%= text_input f, :description %>
+  <%= textarea f, :description %>
 
   <%= label f, :encryption_algo, class: "control-label" %>
   <%= select f, :encryption_algo, ~w(aes_gcm plain), selected: "aes_gcm" %>
@@ -16,8 +19,11 @@
   <%= label f, :ttl, "TTL (in minutes)", class: "control-label" %>
   <%= number_input f, :ttl, value: 5 %>
 
-  <%= label f, :max_attempts, "Max Attempts (default: infinite)", class: "control-label" %>
-  <%= number_input f, :max_attempts, placeholder: "infinite" %>
+  <%= label f, :max_attempts, "Max Attempts (default: 999)", class: "control-label" %>
+  <%= number_input f, :max_attempts, value: 999 %>
+
+  <%= label f, :max_reads, "Max Reads (default: 999)", class: "control-label" %>
+  <%= number_input f, :max_reads, value: 999 %>
 
   <br />
   <%= submit "Insert Secure Data" %>

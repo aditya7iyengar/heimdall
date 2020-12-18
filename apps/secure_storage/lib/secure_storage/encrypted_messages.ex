@@ -101,7 +101,7 @@ defmodule SecureStorage.EncryptedMessages do
   end
 
   defp add_encrypted(message, txt, params) do
-    ttl = Map.get(params, "ttl", @default_ttl) * 60
+    ttl = get_ttl(params)
     enc_at = DateTime.utc_now()
     exp_at = DateTime.add(enc_at, ttl, :second)
 
@@ -136,5 +136,12 @@ defmodule SecureStorage.EncryptedMessages do
 
   defp decrypt(%EncryptedMessage{encryption_algo: :aes_gcm} = msg, key) do
     AesGcm.decrypt(msg.txt, key)
+  end
+
+  defp get_ttl(params) do
+    case Map.get(params, "ttl", @default_ttl) do
+      mins when is_binary(mins) -> String.to_integer(mins) * 60
+      mins when is_integer(mins) -> mins * 60
+    end
   end
 end
