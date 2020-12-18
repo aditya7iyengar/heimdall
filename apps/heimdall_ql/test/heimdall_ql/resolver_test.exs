@@ -1,17 +1,12 @@
 defmodule HeimdallQL.ResolverTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   import Mox
 
   alias EncryptedMessagesMock, as: Mock
-  alias SecureStorage.Repo
   alias SecureStorage.Schema.EncryptedMessage
 
   @module HeimdallQL.Resolver
-
-  setup do
-    Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-  end
 
   describe "list_encrypted_messages/3" do
     setup do

@@ -1,0 +1,41 @@
+<%= cond do %>
+  <% @message == nil && @result == nil -> %>
+    404 Not Found
+
+  <% @result == nil -> %>
+    <h4> Showing Secure Data </h2>
+
+    <form phx-submit="decrypt">
+      <input type="password" name="key" placeholder="Enter the key" autocomplete="off"/>
+      <input type="hidden" name="id" value="<%= @message.id %>">
+    </form>
+
+    <p><%= @message.short_description %></p>
+
+    <p>Attempts remaining: <%= @message.max_attempts - Enum.count(@message.attempts) %></p>
+    <p>Reads remaining: <%= @message.max_reads - Enum.count(@message.reads) %></p>
+
+    <br />
+    <em>Encrypted using: <%= @message.encryption_algo %></em>
+
+  <% true -> %>
+    <h4> Showing Secure Data </h2>
+
+      <p><%= @message.description %></p>
+
+      <br />
+
+      <%= if @show do %>
+        <blockquote>
+          <div style="white-space: pre-wrap"><%= @result %></div>
+        </blockquote>
+        <button phx-click="hide">Hide</button>
+      <% else %>
+        <button phx-click="show">Show</button>
+      <% end %>
+      <br />
+
+      <button class="clippy" phx-click="hide" data-clipboard-text="<%= @result %>">
+          Copy to clipboard
+      </button>
+<% end %>

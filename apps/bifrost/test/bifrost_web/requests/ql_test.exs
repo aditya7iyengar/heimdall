@@ -1,25 +1,21 @@
 defmodule BifrostWeb.QLTest do
   use BifrostWeb.APIConnCase
 
+  import Mox
+
+  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.Schema.EncryptedMessage
+
   @graphql_path "/api/graphql"
 
   describe "ql list" do
     setup ctx do
-      SecureStorage.start_link([])
+      encrypted_message =
+        %EncryptedMessage{state: :new, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{})
+        |> Ecto.Changeset.apply_changes()
 
-      {:ok, uuid} =
-        SecureStorage.insert(
-          "raw",
-          :key,
-          :plaintext,
-          %{description: "Description"}
-        )
-
-      {:ok, encrypted_message} = SecureStorage.get_encrypted(uuid)
-
-      on_exit(fn ->
-        SecureStorage.delete(uuid)
-      end)
+      stub(Mock, :list_messages, fn -> [encrypted_message] end)
 
       {:ok, Map.put(ctx, :encrypted_message, encrypted_message)}
     end
@@ -31,10 +27,10 @@ defmodule BifrostWeb.QLTest do
       query = """
       query {
         encrypted_messages {
-          description
-          encrypted
+          short_description
+          txt
           encryption_algo
-          uuid
+          id
         }
       }
       """
@@ -53,9 +49,11 @@ defmodule BifrostWeb.QLTest do
 
       [encrypted_message_response] = encrypted_messages
 
-      assert encrypted_message_response["description"] == encrypted_message.description
-      assert encrypted_message_response["uuid"] == encrypted_message.uuid
-      assert encrypted_message_response["encrypted"] == encrypted_message.encrypted
+      assert encrypted_message_response["short_description"] ==
+               encrypted_message.short_description
+
+      assert encrypted_message_response["id"] == encrypted_message.id
+      assert encrypted_message_response["txt"] == encrypted_message.txt
 
       assert encrypted_message_response["encryption_algo"] ==
                to_string(encrypted_message.encryption_algo)
@@ -65,10 +63,10 @@ defmodule BifrostWeb.QLTest do
       query = """
       query {
         encrypted_messages {
-          description
-          encrypted
+          short_description
+          txt
           encryption_algo
-          uuid
+          id
         }
       }
       """

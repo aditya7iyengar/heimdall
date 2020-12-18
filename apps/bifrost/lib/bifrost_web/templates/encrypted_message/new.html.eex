@@ -1,4 +1,4 @@
-<%= form_for :aesir, Routes.aesir_path(BifrostWeb.Endpoint, :create), fn f -> %>
+<%= form_for :encrypted_message, Routes.encrypted_message_path(BifrostWeb.Endpoint, :create), fn f -> %>
   <%= label f, :raw, class: "control-label" %>
   <%= textarea f, :raw_mask %>
 
@@ -11,7 +11,7 @@
   <%= text_input f, :description %>
 
   <%= label f, :encryption_algo, class: "control-label" %>
-  <%= select f, :encryption_algo, ~w(aes plain), selected: "aes" %>
+  <%= select f, :encryption_algo, ~w(aes_gcm plain), selected: "aes_gcm" %>
 
   <%= label f, :ttl, "TTL (in minutes)", class: "control-label" %>
   <%= number_input f, :ttl, value: 5 %>
@@ -24,8 +24,8 @@
 <% end %>
 
 <script>
-  let rawMask = document.getElementById("aesir_raw_mask")
-  let rawValue = document.getElementById("aesir_raw")
+  let rawMask = document.getElementById("encrypted_message_raw_mask")
+  let rawValue = document.getElementById("encrypted_message_raw")
 
   rawMask.addEventListener("blur", _event => {
     console.log(rawMask.value)

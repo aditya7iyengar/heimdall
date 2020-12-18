@@ -123,18 +123,18 @@ is already shared.
 
 ## Roadmap
 
-- [X] Add "add aesir" link
+- [X] Add "add encrypted_message" link
 - [X] Make `Dockerfile` more env friendly
-- [X] Add ttl to aesir form in the UI
-- [X] Add wrong attempts to aesirs
-- [X] Make aesirs raw value textarea (and still password somehow)
-- [X] Add delete aesir action
+- [X] Add ttl to encrypted_message form in the UI
+- [X] Add wrong attempts to encrypted_messages
+- [X] Make encrypted_messages raw value textarea (and still password somehow)
+- [X] Add delete encrypted_message action
 - [ ] Add geography/IP filter
 - [X] Add show/hide key button
 - [X] Add limit to number of times the link is decrypted
-- [ ] Add incoming aesirs? This will need some thought
+- [ ] Add incoming encrypted_messages? This will need some thought
 - [ ] Add better Dockerfile w/ releases
-- [X] Add an API endpoint for adding aesirs
+- [X] Add an API endpoint for adding encrypted_messages
 - [ ] Add a `cli` app that talks to the API
 - [X] Add notes for `ngrok` integration
 - [ ] Deploy w/ `k8s`

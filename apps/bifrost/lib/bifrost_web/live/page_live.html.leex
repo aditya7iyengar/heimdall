@@ -4,16 +4,16 @@
 </section>
 
 <form phx-change="suggest" phx-submit="search">
-  <input type="text" name="q" value="<%= @query %>" placeholder="Live aesir search" list="results" autocomplete="off"/>
+  <input type="text" name="q" value="<%= @query %>" placeholder="Live encrypted_message search" list="results" autocomplete="off"/>
 </form>
 
 <table>
   <tbody>
-  <%= for %{description: description, uuid: uuid} <- @results do %>
+  <%= for %{short_description: short_description, id: id} <- @results do %>
     <tr>
-      <td><%= description %></td>
-      <td><%= link(uuid, to: Routes.aesir_path(BifrostWeb.Endpoint, :show, uuid), class: "aesir-link") %></td>
-      <td><%= link("Delete", to: Routes.aesir_path(BifrostWeb.Endpoint, :delete, uuid), class: "button is-small is-danger", method: :delete, data: [confirm: "Confirm deleting Aesir?"]) %></td>
+      <td><%= short_description %></td>
+      <td><%= link(id, to: Routes.encrypted_message_path(BifrostWeb.Endpoint, :show, id), class: "encrypted_message-link") %></td>
+      <td><%= link("Delete", to: Routes.encrypted_message_path(BifrostWeb.Endpoint, :delete, id), class: "button is-small is-danger", method: :delete, data: [confirm: "Confirm deleting EncryptedMessage?"]) %></td>
     </tr>
   <% end %>
   </tbody>

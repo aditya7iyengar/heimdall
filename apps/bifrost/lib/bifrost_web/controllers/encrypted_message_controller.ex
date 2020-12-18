@@ -32,7 +32,7 @@ defmodule BifrostWeb.EncryptedMessageController do
   end
 
   defp parse_encrypted_message_args(encrypted_message_params) do
-    params = clean_up_params(encrypted_message_params)
+    params = Map.drop(encrypted_message_params, ["raw", "key"])
 
     [
       Map.fetch!(encrypted_message_params, "raw"),
@@ -40,42 +40,4 @@ defmodule BifrostWeb.EncryptedMessageController do
       params
     ]
   end
-
-  defp clean_up_params(encrypted_message_params) do
-    encryption_algo =
-      encrypted_message_params
-      |> Map.fetch!("encryption_algo")
-      |> translate_to_asguardian_algo()
-
-    ttl =
-      encrypted_message_params
-      |> Map.fetch!("ttl")
-      |> ttl_from_params()
-
-    max_attempts =
-      case Map.get(encrypted_message_params, "max_attempts") do
-        "infinite" -> nil
-        "" -> nil
-        str -> String.to_integer(str)
-      end
-
-    max_reads =
-      case Map.get(encrypted_message_params, "max_reads") do
-        "infinite" -> nil
-        "" -> nil
-        str -> String.to_integer(str)
-      end
-
-    encrypted_message_params
-    |> Map.put("encryption_algo", encryption_algo)
-    |> Map.put("ttl", ttl)
-    |> Map.put("max_attempts", max_attempts)
-    |> Map.put("max_reads", max_reads)
-  end
-
-  defp translate_to_asguardian_algo("aes"), do: :aes_gcm
-  defp translate_to_asguardian_algo("plain"), do: :plain
-
-  defp ttl_from_params(integer) when is_integer(integer), do: integer
-  defp ttl_from_params(str) when is_binary(str), do: String.to_integer(str)
 end

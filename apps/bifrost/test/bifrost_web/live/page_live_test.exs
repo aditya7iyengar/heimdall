@@ -3,17 +3,30 @@ defmodule BifrostWeb.PageLiveTest do
 
   import Phoenix.LiveViewTest
 
+  import Mox
+  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.Schema.EncryptedMessage
+
   setup %{auth_conn: conn} do
     description = "Some Description"
 
-    params = %{
-      description: description,
-      encryption_algo: :plaintext,
-      max_attempts: 999,
-      max_reads: 999
-    }
+    query = description |> String.codepoints() |> Enum.take(4) |> Enum.join()
 
-    uuid = SecureStorage.insert_encrypted_message("text", nil, params)
+    stub(Mock, :search_messages, fn
+      ^query ->
+        [
+          %EncryptedMessage{
+            id: "some-id",
+            state: :encrypted,
+            short_description: description,
+            encryption_algo: "plain",
+            txt: "raw"
+          }
+        ]
+
+      _ ->
+        []
+    end)
 
     {:ok, auth_conn: conn, description: description}
   end
