@@ -20,24 +20,32 @@ defmodule BifrostWeb.EncryptedMessageLive do
          |> assign(message: nil, result: nil, show: false)}
 
       {:error, :decryption_error} ->
+        message = SecureStorage.get_message(id)
+
         {:noreply,
          socket
          |> put_flash(:error, "Error in decryption")
          |> assign(message: message, result: nil, show: false)}
 
       {:error, :no_attempts_remaining} ->
+        message = SecureStorage.get_message(id)
+
         {:noreply,
          socket
          |> put_flash(:error, "No Attempts remaining")
          |> assign(message: message, result: nil, show: false)}
 
       {:error, :no_reads_remaining} ->
+        message = SecureStorage.get_message(id)
+
         {:noreply,
          socket
          |> put_flash(:error, "No Reads remaining")
          |> assign(message: message, result: nil, show: false)}
 
       {:ok, decrypted} when is_binary(decrypted) ->
+        message = SecureStorage.get_message(id)
+
         {:noreply,
          socket
          |> put_flash(:info, "Message decrypted and ready to copy to clipboard")

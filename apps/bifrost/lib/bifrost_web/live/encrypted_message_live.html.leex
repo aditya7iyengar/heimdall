@@ -12,8 +12,10 @@
 
     <p><%= @message.short_description %></p>
 
-    <p>Attempts remaining: <%= @message.max_attempts - Enum.count(@message.attempts) %></p>
-    <p>Reads remaining: <%= @message.max_reads - Enum.count(@message.reads) %></p>
+    <blockquote>
+      <p>Attempts remaining: <%= @message.max_attempts - Enum.count(@message.attempts) %></p>
+      <p>Reads remaining: <%= @message.max_reads - Enum.count(@message.reads) %></p>
+    </blockquote>
 
     <br />
     <em>Encrypted using: <%= @message.encryption_algo %></em>

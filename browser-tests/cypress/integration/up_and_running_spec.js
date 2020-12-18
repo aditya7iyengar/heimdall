@@ -32,15 +32,8 @@ describe('Up and Running', () => {
         cy.get('textarea[name="encrypted_message[raw]"]').invoke('val', 'Raw value')
 
         cy.get('input[name="encrypted_message[key]"]').invoke('val', 'secret')
-        // Give a few milliseconds for the websocket to do its magic
-        cy.wait(100)
 
         cy.get('input[name="encrypted_message[short_description]"]').invoke('val', 'some description')
-
-        cy.get('button[type=submit]').click()
-
-        // On the main page, search for encrypted_message's description
-        cy.get('input[type=text]').invoke('val', 'some')
 
         cy.get('input[name="encrypted_message[max_attempts]"]').invoke('val', 1)
         cy.get('input[name="encrypted_message[max_reads]"]').invoke('val', 100)
@@ -48,10 +41,18 @@ describe('Up and Running', () => {
         // Give a few milliseconds for the websocket to do its magic
         cy.wait(100)
 
+        cy.get('button[type=submit]').click()
+
+        // On the main page, search for encrypted_message's description
+        cy.get('input[type=text]').invoke('val', 'some')
+
+        // Give a few milliseconds for the websocket to do its magic
+        cy.wait(100)
+
         cy.get('form').submit()
 
         // Visit encrypted_message link
-        cy.get('a[class="encrypted-message-link"]', {
+        cy.get('a[class="encrypted_message-link"]', {
             timeout: 1000
         }).first().click()
 

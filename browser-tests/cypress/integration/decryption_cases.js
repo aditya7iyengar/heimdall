@@ -81,7 +81,7 @@ describe('Up and Running', () => {
         // Give a few milliseconds for the websocket to do its magic
         cy.wait(100)
 
-        // Get button text
-        cy.get('blockquote').should('contain.text', 'Decryption attempts remaining: 0')
+        // Attempts remaining == 0
+        cy.get('blockquote').should('contain.text', 'Attempts remaining: 0')
     })
 })
