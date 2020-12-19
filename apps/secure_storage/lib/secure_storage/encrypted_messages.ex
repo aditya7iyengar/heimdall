@@ -67,8 +67,8 @@ defmodule SecureStorage.EncryptedMessages do
   end
 
   @impl true
-  def delete_message(id) do
-    Repo.delete(EncryptedMessage, id)
+  def delete_message(message) do
+    Repo.delete(message)
   end
 
   @impl true
