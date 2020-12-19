@@ -1,6 +1,12 @@
 #!/bin/bash
 
 echo "-----------------------"
+echo "Setting up the database"
+echo "-----------------------"
+
+mix ecto.reset
+
+echo "-----------------------"
 echo "Starting Phoenix Server"
 echo "-----------------------"
 

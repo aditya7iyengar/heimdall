@@ -160,14 +160,14 @@ jobs:
       run: mix deps.get
 
     - name: Run Coverage
-      run: mix coveralls
-
-    - name: Report Coverage
       env:
         HEIMDALL_DB_USERNAME: postgres
         HEIMDALL_DB_PASSWORD: postgres
         HEIMDALL_DB_TEST_USERNAME: postgres
         HEIMDALL_DB_TEST_PASSWORD: postgres
+      run: mix coveralls
+
+    - name: Report Coverage
       run: mix coveralls.github
 
   elixir_fmt:
