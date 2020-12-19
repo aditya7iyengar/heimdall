@@ -48,7 +48,7 @@ defmodule SecureStorage.EncryptedMessagesTest do
     end
 
     test "returns invalid changeset when invalid params" do
-      ttl = 2
+      ttl = "2"
       invalid_params = %{"ttl" => ttl}
 
       raw = "Raw text"
@@ -148,6 +148,124 @@ defmodule SecureStorage.EncryptedMessagesTest do
       returned_message = @module.get_message(Ecto.UUID.generate())
 
       assert is_nil(returned_message)
+    end
+  end
+
+  describe "delete_message/1" do
+    setup do
+      message =
+        %EncryptedMessage{state: :new, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{})
+        |> Repo.insert!()
+
+      {:ok, message: message}
+    end
+
+    test "deletes message", %{message: message} do
+      assert @module.get_message(message.id)
+
+      {:ok, _returned_message} = @module.delete_message(message)
+
+      refute @module.get_message(message.id)
+    end
+  end
+
+  describe "list_messages/1" do
+    setup do
+      %EncryptedMessage{state: :new, short_description: "desc 1"}
+      |> EncryptedMessage.changeset(%{})
+      |> Repo.insert!()
+
+      %EncryptedMessage{state: :new, short_description: "desc 2"}
+      |> EncryptedMessage.changeset(%{})
+      |> Repo.insert!()
+
+      :ok
+    end
+
+    test "lists all the messages" do
+      messages = @module.list_messages
+
+      assert Enum.count(messages) == 2
+    end
+  end
+
+  describe "decrypt_message/3" do
+    setup do
+      ttl = "2"
+      short_description = "short desc"
+
+      valid_params = %{
+        "short_description" => short_description,
+        "ttl" => ttl,
+        "max_attempts" => 1,
+        "max_reads" => 1
+      }
+
+      raw = "Raw text"
+      key = "key"
+
+      {:ok, message} = @module.insert_encrypted_message(raw, key, valid_params)
+
+      {:ok, message: message}
+    end
+
+    test "decrypts if valid key, attempts and reads", %{message: message} do
+      refute message.txt == "Raw text"
+
+      {:ok, decrypted} = @module.decrypt_message(message, "key")
+
+      assert decrypted == "Raw text"
+    end
+
+    test "returns error if invalid key", %{message: message} do
+      refute message.txt == "Raw text"
+
+      {:error, :decryption_error} = @module.decrypt_message(message, "key2")
+    end
+
+    test "returns error if no remaining attempts", %{message: message} do
+      refute message.txt == "Raw text"
+
+      # Max attempts == 1
+      {:error, :decryption_error} = @module.decrypt_message(message, "key2")
+
+      # So this should return no attempts left
+      {:error, :no_attempts_remaining} = @module.decrypt_message(message, "key")
+    end
+
+    test "returns error if no remaining reads", %{message: message} do
+      refute message.txt == "Raw text"
+
+      # Max reads == 1
+      {:ok, _decrypted} = @module.decrypt_message(message, "key")
+
+      # So this should return no attempts left
+      {:error, :no_reads_remaining} = @module.decrypt_message(message, "key")
+    end
+
+    test "returns text for plain message" do
+      ttl = "2"
+      short_description = "short desc"
+
+      valid_params = %{
+        "short_description" => short_description,
+        "ttl" => ttl,
+        "encryption_algo" => "plain",
+        "max_attempts" => 1,
+        "max_reads" => 1
+      }
+
+      raw = "Raw text"
+      key = "key"
+
+      {:ok, message} = @module.insert_encrypted_message(raw, key, valid_params)
+
+      assert message.txt == "Raw text"
+
+      {:ok, decrypted} = @module.decrypt_message(message, "key")
+
+      assert decrypted == "Raw text"
     end
   end
 
