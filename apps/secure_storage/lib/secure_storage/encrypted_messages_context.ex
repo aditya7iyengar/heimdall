@@ -18,7 +18,8 @@ defmodule SecureStorage.EncryptedMessagesContext do
 
   @callback get_message(String.t()) :: EncryptedMessage.t() | nil
 
-  @callback delete_message(String.t()) :: EncryptedMessage.t() | nil
+  @callback delete_message(EncryptedMessage.t()) ::
+              {:ok, EncryptedMessage.t()} | {:error, Ecto.Changeset.t()}
 
   @callback list_messages() :: list(EncryptedMessage.t())
 

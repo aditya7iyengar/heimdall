@@ -54,6 +54,7 @@ defmodule SecureStorage.Schema.EncryptedMessage do
 
   @required_fields_new ~w(short_description)a
 
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "encrypted_messages" do
     # This is for searching and is indexed
     field(:short_description, :string)

@@ -89,7 +89,7 @@ defmodule BifrostWeb.EncryptedMessageControllerTest do
   end
 
   describe "delete/2" do
-    test "deletes an EncryptedMessage from SecureStorage and redirects to root", %{
+    test "deletes an EncryptedMessage and redirects to root", %{
       auth_conn: conn
     } do
       stub(Mock, :delete_message, fn _ -> {:ok, nil} end)
@@ -102,6 +102,19 @@ defmodule BifrostWeb.EncryptedMessageControllerTest do
 
       assert html_response(conn, 302) =~ "redirected"
       assert conn.private.plug_session["phoenix_flash"]["info"] =~ "Deleted"
+    end
+
+    test "redirects when message doesn't exist", %{auth_conn: conn} do
+      stub(Mock, :delete_message, fn _ -> {:error, nil} end)
+
+      conn =
+        delete(
+          conn,
+          Routes.encrypted_message_path(conn, :delete, "xyz")
+        )
+
+      assert html_response(conn, 302) =~ "redirected"
+      assert conn.private.plug_session["phoenix_flash"]["error"] =~ "Cannot find"
     end
   end
 end

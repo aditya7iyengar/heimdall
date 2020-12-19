@@ -67,8 +67,8 @@ defmodule SecureStorage.EncryptedMessages do
   end
 
   @impl true
-  def delete_message(id) do
-    Repo.delete(EncryptedMessage, id)
+  def delete_message(message) do
+    Repo.delete(message)
   end
 
   @impl true
@@ -78,6 +78,8 @@ defmodule SecureStorage.EncryptedMessages do
 
   @impl true
   def decrypt_message(message, key, ip \\ "none") do
+    message = Repo.get!(EncryptedMessage, message.id)
+
     attempts_remaining = message.max_attempts > Enum.count(message.attempts)
     reads_remaining = message.max_reads > Enum.count(message.reads)
 
