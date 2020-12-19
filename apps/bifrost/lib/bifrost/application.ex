@@ -13,8 +13,7 @@ defmodule Bifrost.Application do
       {Phoenix.PubSub, name: Bifrost.PubSub},
       # Start the Endpoint (http/https)
       BifrostWeb.Endpoint,
-      # Start secure data store
-      Asguard,
+      # Quantum scheduler
       Bifrost.Scheduler
     ]
 

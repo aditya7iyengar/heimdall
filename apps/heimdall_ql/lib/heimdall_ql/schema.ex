@@ -6,7 +6,7 @@ defmodule HeimdallQL.Schema do
   use Absinthe.Schema
 
   import_types(Absinthe.Type.Custom)
-  import_types(HeimdallQL.Schema.Aesir)
+  import_types(HeimdallQL.Schema.EncryptedMessage)
 
   def context(ctx), do: ctx
 
@@ -15,10 +15,10 @@ defmodule HeimdallQL.Schema do
   end
 
   query do
-    import_fields(:aesir_queries)
+    import_fields(:encrypted_message_queries)
   end
 
   mutation do
-    import_fields(:aesir_mutations)
+    import_fields(:encrypted_message_mutations)
   end
 end

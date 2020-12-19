@@ -55,13 +55,13 @@ defmodule BifrostWeb.Router do
 
     live "/", PageLive, :index
 
-    resources "/aesirs", AesirController, only: [:new, :create, :delete]
+    resources "/encrypted_messages", EncryptedMessageController, only: [:new, :create, :delete]
   end
 
   scope "/", BifrostWeb do
     pipe_through :public_browser
 
-    live "/aesirs/:uuid", AesirLive, :show
+    live "/encrypted_messages/:id", EncryptedMessageLive, :show
   end
 
   scope "/api/graphql" do

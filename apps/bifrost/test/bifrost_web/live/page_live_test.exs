@@ -3,25 +3,30 @@ defmodule BifrostWeb.PageLiveTest do
 
   import Phoenix.LiveViewTest
 
+  import Mox
+  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.Schema.EncryptedMessage
+
   setup %{auth_conn: conn} do
     description = "Some Description"
 
-    inserted_aesir = %Asguard.Aesir{
-      description: description,
-      encrypted: "encrypted",
-      encryption_algo: :plaintext,
-      uuid: "cdfdaf44-ee35-11e3-846b-14109ff1a304",
-      max_attempts: :infinite,
-      current_attempts: 0,
-      max_decryptions: :infinite,
-      current_decryptions: 0,
-      iat: DateTime.utc_now(),
-      exp: DateTime.utc_now()
-    }
+    query = description |> String.codepoints() |> Enum.take(4) |> Enum.join()
 
-    uuid = GenServer.call(Asguard, {:insert, inserted_aesir})
+    stub(Mock, :search_messages, fn
+      ^query ->
+        [
+          %EncryptedMessage{
+            id: "some-id",
+            state: :encrypted,
+            short_description: description,
+            encryption_algo: "plain",
+            txt: "raw"
+          }
+        ]
 
-    on_exit(fn -> Asguard.delete(uuid) end)
+      _ ->
+        []
+    end)
 
     {:ok, auth_conn: conn, description: description}
   end

@@ -49,7 +49,6 @@ defmodule Bifrost.MixProject do
     [
       {:absinthe_phoenix, "~> 2.0.0"},
       {:absinthe_plug, "~> 1.5.0"},
-      {:asguard, in_umbrella: true},
       {:excoveralls, "~> 0.13.2", only: :test},
       {:floki, ">= 0.27.0", only: :test},
       {:gettext, "~> 0.11"},
@@ -62,6 +61,7 @@ defmodule Bifrost.MixProject do
       {:phoenix_live_view, "~> 0.14.6"},
       {:plug_cowboy, "~> 2.0"},
       {:quantum, "~> 3.2.0"},
+      {:secure_storage, in_umbrella: true},
       {:sobelow, "~> 0.8", only: :dev},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"}

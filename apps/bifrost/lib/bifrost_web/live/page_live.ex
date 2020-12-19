@@ -23,20 +23,20 @@ defmodule BifrostWeb.PageLive do
       [] ->
         {:noreply,
          socket
-         |> put_flash(:error, "No aesirs found matching \"#{query}\"")
+         |> put_flash(:error, "No encrypted_messages found matching \"#{query}\"")
          |> assign(results: [], query: query)}
 
-      aesirs ->
-        num = Enum.count(aesirs)
+      encrypted_messages ->
+        num = Enum.count(encrypted_messages)
 
         {:noreply,
          socket
-         |> put_flash(:info, "Found #{num} aesirs found matching \"#{query}\"")
-         |> assign(results: aesirs, query: query)}
+         |> put_flash(:info, "Found #{num} encrypted_messages found matching \"#{query}\"")
+         |> assign(results: encrypted_messages, query: query)}
     end
   end
 
   defp search(query) do
-    Asguard.search(query)
+    SecureStorage.search_messages(query)
   end
 end

@@ -50,6 +50,18 @@ jobs:
 
     needs: build
 
+    services:
+      db:
+        image: postgres:11
+        ports: ['5432:5432']
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir
@@ -69,6 +81,11 @@ jobs:
       run: mix deps.get
 
     - name: Run tests
+      env:
+        HEIMDALL_DB_USERNAME: postgres
+        HEIMDALL_DB_PASSWORD: postgres
+        HEIMDALL_DB_TEST_USERNAME: postgres
+        HEIMDALL_DB_TEST_PASSWORD: postgres
       run: mix test
 
   mix-sobelow:
@@ -111,13 +128,29 @@ jobs:
     env:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HEIMDALL_DB_USERNAME: postgres
+      HEIMDALL_DB_PASSWORD: postgres
+      HEIMDALL_DB_TEST_USERNAME: postgres
+      HEIMDALL_DB_TEST_PASSWORD: postgres
+
+    services:
+      db:
+        image: postgres:11
+        ports: ['5432:5432']
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir
       uses: actions/setup-elixir@v1
       with:
-        elixir-version: '1.10.3'
+        elixir-version: '1.10.4'
         otp-version: '22.3'
 
     - name: Restore dependencies cache
@@ -148,7 +181,7 @@ jobs:
     - name: Set up Elixir
       uses: actions/setup-elixir@v1
       with:
-        elixir-version: '1.10.3'
+        elixir-version: '1.10.4'
         otp-version: '22.3'
 
     - name: Restore dependencies cache
@@ -195,12 +228,24 @@ jobs:
 
     needs: build
 
+    services:
+      db:
+        image: postgres:11
+        ports: ['5432:5432']
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir
       uses: actions/setup-elixir@v1
       with:
-        elixir-version: '1.10.3'
+        elixir-version: '1.10.4'
         otp-version: '22.3'
 
     - name: Setup Node
@@ -227,6 +272,10 @@ jobs:
 
     - name: Run phoenix server & browser tests
       env:
+        HEIMDALL_DB_USERNAME: postgres
+        HEIMDALL_DB_PASSWORD: postgres
+        HEIMDALL_DB_TEST_USERNAME: postgres
+        HEIMDALL_DB_TEST_PASSWORD: postgres
         BIFROST_PORT: 4010
         BIFROST_USER: dev_user
         BIFROST_PASSWORD: secret

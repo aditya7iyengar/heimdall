@@ -1,37 +1,36 @@
 defmodule BifrostWeb.QLTest do
   use BifrostWeb.APIConnCase
 
+  import Mox
+
+  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.Schema.EncryptedMessage
+
   @graphql_path "/api/graphql"
 
   describe "ql list" do
     setup ctx do
-      Asguard.start_link([])
+      encrypted_message =
+        %EncryptedMessage{state: :new, short_description: "desc"}
+        |> EncryptedMessage.changeset(%{})
+        |> Ecto.Changeset.apply_changes()
 
-      {:ok, uuid} =
-        Asguard.insert(
-          "raw",
-          :key,
-          :plaintext,
-          %{description: "Description"}
-        )
+      stub(Mock, :list_messages, fn -> [encrypted_message] end)
 
-      {:ok, aesir} = Asguard.get_encrypted(uuid)
-
-      on_exit(fn ->
-        Asguard.delete(uuid)
-      end)
-
-      {:ok, Map.put(ctx, :aesir, aesir)}
+      {:ok, Map.put(ctx, :encrypted_message, encrypted_message)}
     end
 
-    test "lists all aesirs when authorized", %{auth_conn: conn, aesir: aesir} do
+    test "lists all encrypted_messages when authorized", %{
+      auth_conn: conn,
+      encrypted_message: encrypted_message
+    } do
       query = """
       query {
-        aesirs {
-          description
-          encrypted
+        encrypted_messages {
+          short_description
+          txt
           encryption_algo
-          uuid
+          id
         }
       }
       """
@@ -40,32 +39,34 @@ defmodule BifrostWeb.QLTest do
 
       assert conn.status == 200
 
-      aesirs =
+      encrypted_messages =
         conn.resp_body
         |> Jason.decode!()
         |> Map.get("data")
-        |> Map.get("aesirs")
+        |> Map.get("encrypted_messages")
 
-      assert Enum.count(aesirs) == 1
+      assert Enum.count(encrypted_messages) == 1
 
-      [aesir_response] = aesirs
+      [encrypted_message_response] = encrypted_messages
 
-      assert aesir_response["description"] == aesir.description
-      assert aesir_response["uuid"] == aesir.uuid
-      assert aesir_response["encrypted"] == aesir.encrypted
+      assert encrypted_message_response["short_description"] ==
+               encrypted_message.short_description
 
-      assert aesir_response["encryption_algo"] ==
-               to_string(aesir.encryption_algo)
+      assert encrypted_message_response["id"] == encrypted_message.id
+      assert encrypted_message_response["txt"] == encrypted_message.txt
+
+      assert encrypted_message_response["encryption_algo"] ==
+               to_string(encrypted_message.encryption_algo)
     end
 
     test "401 when unauthorized", %{unauth_conn: conn} do
       query = """
       query {
-        aesirs {
-          description
-          encrypted
+        encrypted_messages {
+          short_description
+          txt
           encryption_algo
-          uuid
+          id
         }
       }
       """

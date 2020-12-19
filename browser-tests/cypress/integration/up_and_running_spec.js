@@ -19,28 +19,31 @@ describe('Up and Running', () => {
         })
     })
 
-    it('tests the complete life cycle of an aesir', () => {
-        cy.visit(`http://localhost:${port}/aesirs/new`, {
+    it('tests the complete life cycle of an encrypted_message', () => {
+        cy.visit(`http://localhost:${port}/encrypted_messages/new`, {
             auth: {
                 username: username,
                 password: password
             }
         })
 
-        cy.get('textarea[name="aesir[raw_mask]"]').invoke('val', 'Raw value')
+        cy.get('textarea[name="encrypted_message[raw_mask]"]').invoke('val', 'Raw value')
 
-        cy.get('textarea[name="aesir[raw]"]').invoke('val', 'Raw value')
+        cy.get('textarea[name="encrypted_message[raw]"]').invoke('val', 'Raw value')
 
-        cy.get('input[name="aesir[key]"]').invoke('val', 'secret')
+        cy.get('input[name="encrypted_message[key]"]').invoke('val', 'secret')
+
+        cy.get('input[name="encrypted_message[short_description]"]').invoke('val', 'some description')
+
+        cy.get('input[name="encrypted_message[max_attempts]"]').invoke('val', 1)
+        cy.get('input[name="encrypted_message[max_reads]"]').invoke('val', 100)
+
         // Give a few milliseconds for the websocket to do its magic
         cy.wait(100)
 
-        cy.get('input[name="aesir[description]"]').invoke('val', 'some description')
-
-
         cy.get('button[type=submit]').click()
 
-        // On the main page, search for aesir's description
+        // On the main page, search for encrypted_message's description
         cy.get('input[type=text]').invoke('val', 'some')
 
         // Give a few milliseconds for the websocket to do its magic
@@ -48,8 +51,8 @@ describe('Up and Running', () => {
 
         cy.get('form').submit()
 
-        // Visit aesir link
-        cy.get('a[class="aesir-link"]', {
+        // Visit encrypted_message link
+        cy.get('a[class="encrypted_message-link"]', {
             timeout: 1000
         }).first().click()
 

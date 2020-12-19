@@ -1,31 +1,35 @@
 defmodule HeimdallQL.Resolver do
   @moduledoc false
 
-  def list_aesirs(_, _, _) do
-    {:ok, Asguard.search("")}
+  def list_encrypted_messages(_, _, _) do
+    {:ok, SecureStorage.list_messages()}
   end
 
-  def get_aesir(_, %{uuid: uuid}, _) do
-    Asguard.get_encrypted(uuid)
+  def get_encrypted_message(_, %{id: id}, _) do
+    case SecureStorage.get_message(id) do
+      nil -> {:error, "Not found"}
+      encrypted_message -> {:ok, encrypted_message}
+    end
   end
 
-  def create_aesir(_, params, _) do
+  def create_encrypted_message(_, params, _) do
     args = parse_create_params_to_args(params)
 
-    {:ok, uuid} = apply(Asguard, :insert, args)
-    Asguard.get_encrypted(uuid)
+    apply(SecureStorage, :insert_encrypted_message, args)
   end
 
   defp parse_create_params_to_args(params) do
     [
       Map.fetch!(params, :raw),
       Map.fetch!(params, :key),
-      params |> Map.get(:encryption_algo, "aes_gcm") |> String.to_atom(),
-      %{
-        description: Map.fetch!(params, :description),
-        max_attempts: Map.get(params, :max_attempts, :infinite)
-      },
-      Map.get(params, :ttl, 5)
+      params_to_string_map(params)
     ]
+  end
+
+  defp params_to_string_map(params) do
+    params
+    |> Map.to_list()
+    |> Enum.map(fn {k, v} -> {to_string(k), v} end)
+    |> Enum.into(%{})
   end
 end

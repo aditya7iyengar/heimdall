@@ -12,13 +12,13 @@
   <body>
     <header>
       <section class="container">
-        <% uuid_regex = ~r/aesirs\/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/ %>
+        <% uuid_regex = ~r/encrypted_messages\/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/ %>
         <% uuid_path = @conn.request_path =~ uuid_regex %>
         <%= if !uuid_path do %>
           <div class='navbar'>
             <ul>
               <li class="navbar_item"><%= link "Heimdall", to: "/" %></li>
-              <li class="navbar_item"><%= link "Add Information", to: Routes.aesir_path(BifrostWeb.Endpoint, :new) %></li>
+              <li class="navbar_item"><%= link "Add Information", to: Routes.encrypted_message_path(BifrostWeb.Endpoint, :new) %></li>
               <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
                 <li class="navbar_item"><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
               <% end %>

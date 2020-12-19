@@ -1,10 +1,18 @@
 use Mix.Config
 
+config :secure_storage,
+  ecto_repos: [SecureStorage.Repo],
+  generators: [binary_id: true]
+
 # Configures the endpoint
 config :bifrost, BifrostWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "RNWG6N61vLAFY86jkT1kLNex7OQOBjUIaTVHK2mfcRTSprNEcYDuJesW3lR4Yizg",
-  render_errors: [view: BifrostWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    view: BifrostWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: Bifrost.PubSub,
   live_view: [signing_salt: "AukjfSqM"]
 
@@ -20,7 +28,7 @@ config :bifrost, Bifrost.Scheduler,
   debug_logging: false,
   jobs: [
     # Every minute
-    {"* * * * *", {Asguard.AesirSweeper, :run, []}}
+    {"* * * * *", {SecureStorage.Sweeper, :run, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom

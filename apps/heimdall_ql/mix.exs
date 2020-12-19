@@ -35,9 +35,9 @@ defmodule HeimdallQL.MixProject do
   defp deps do
     [
       {:absinthe, "~> 1.5.3"},
-      {:asguard, in_umbrella: true},
       {:excoveralls, "~> 0.13.2", only: :test},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:secure_storage, in_umbrella: true}
     ]
   end
 
