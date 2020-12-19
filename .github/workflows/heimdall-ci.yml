@@ -50,10 +50,6 @@ jobs:
 
     needs: build
 
-    env:
-      HEIMDALL_DB_USERNAME: postgres
-      HEIMDALL_DB_PASSWORD: postgres
-
     services:
       db:
         image: postgres:11
@@ -85,6 +81,11 @@ jobs:
       run: mix deps.get
 
     - name: Run tests
+      env:
+        HEIMDALL_DB_USERNAME: postgres
+        HEIMDALL_DB_PASSWORD: postgres
+        HEIMDALL_DB_TEST_USERNAME: postgres
+        HEIMDALL_DB_TEST_PASSWORD: postgres
       run: mix test
 
   mix-sobelow:
@@ -127,8 +128,6 @@ jobs:
     env:
       MIX_ENV: test
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      HEIMDALL_DB_USERNAME: postgres
-      HEIMDALL_DB_PASSWORD: postgres
 
     services:
       db:
@@ -164,6 +163,11 @@ jobs:
       run: mix coveralls
 
     - name: Report Coverage
+      env:
+        HEIMDALL_DB_USERNAME: postgres
+        HEIMDALL_DB_PASSWORD: postgres
+        HEIMDALL_DB_TEST_USERNAME: postgres
+        HEIMDALL_DB_TEST_PASSWORD: postgres
       run: mix coveralls.github
 
   elixir_fmt:
@@ -225,10 +229,6 @@ jobs:
 
     needs: build
 
-    env:
-      HEIMDALL_DB_USERNAME: postgres
-      HEIMDALL_DB_PASSWORD: postgres
-
     services:
       db:
         image: postgres:11
@@ -273,6 +273,10 @@ jobs:
 
     - name: Run phoenix server & browser tests
       env:
+        HEIMDALL_DB_USERNAME: postgres
+        HEIMDALL_DB_PASSWORD: postgres
+        HEIMDALL_DB_TEST_USERNAME: postgres
+        HEIMDALL_DB_TEST_PASSWORD: postgres
         BIFROST_PORT: 4010
         BIFROST_USER: dev_user
         BIFROST_PASSWORD: secret
