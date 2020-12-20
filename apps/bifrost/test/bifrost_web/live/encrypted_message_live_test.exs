@@ -4,7 +4,7 @@ defmodule BifrostWeb.EncryptedMessageLiveTest do
   import Phoenix.LiveViewTest
 
   import Mox
-  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.EncryptedMessagesMock, as: Mock
   alias SecureStorage.Schema.EncryptedMessage
 
   setup %{unauth_conn: conn} do

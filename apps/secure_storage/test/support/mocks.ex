@@ -1,3 +1,11 @@
 require Mox
 
-Mox.defmock(EncryptedMessagesMock, for: SecureStorage.EncryptedMessagesContext)
+Mox.defmock(
+  SecureStorage.EncryptedMessagesMock,
+  for: SecureStorage.EncryptedMessagesContext
+)
+
+Mox.defmock(
+  SecureStorage.ChatRoomsMock,
+  for: SecureStorage.ChatRoomsContext
+)

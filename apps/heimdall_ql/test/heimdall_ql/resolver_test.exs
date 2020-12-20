@@ -3,7 +3,7 @@ defmodule HeimdallQL.ResolverTest do
 
   import Mox
 
-  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.EncryptedMessagesMock, as: Mock
   alias SecureStorage.Schema.EncryptedMessage
 
   @module HeimdallQL.Resolver

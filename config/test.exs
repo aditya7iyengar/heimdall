@@ -26,4 +26,6 @@ config :bifrost, :basic_auth, username: "test_user", password: "secret"
 
 config :heimdall_ql, username: "test_user", password: "secret"
 
-config :secure_storage, SecureStorage, context: EncryptedMessagesMock
+config :secure_storage, SecureStorage,
+  messages_context: SecureStorage.EncryptedMessagesMock,
+  rooms_context: SecureStorage.ChatRoomsMock

@@ -3,13 +3,15 @@ defmodule SecureStorageTest do
 
   import Mox
 
-  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.{ChatRoomsMock, EncryptedMessagesMock}
 
   @module SecureStorage
 
   describe "insert_new_message/1" do
     setup do
-      expect(Mock, :insert_new_message, fn _ -> {:ok, nil} end)
+      expect(EncryptedMessagesMock, :insert_new_message, fn _ ->
+        {:ok, nil}
+      end)
 
       :ok
     end
@@ -21,7 +23,9 @@ defmodule SecureStorageTest do
 
   describe "insert_encrypted_message/3" do
     setup do
-      expect(Mock, :insert_encrypted_message, fn _, _, _ -> {:ok, nil} end)
+      expect(EncryptedMessagesMock, :insert_encrypted_message, fn _, _, _ ->
+        {:ok, nil}
+      end)
 
       :ok
     end
@@ -33,7 +37,9 @@ defmodule SecureStorageTest do
 
   describe "encrypt_message/4" do
     setup do
-      expect(Mock, :encrypt_message, fn _, _, _, _ -> {:ok, nil} end)
+      expect(EncryptedMessagesMock, :encrypt_message, fn _, _, _, _ ->
+        {:ok, nil}
+      end)
 
       :ok
     end
@@ -45,7 +51,7 @@ defmodule SecureStorageTest do
 
   describe "search_messages/1" do
     setup do
-      expect(Mock, :search_messages, fn _ -> nil end)
+      expect(EncryptedMessagesMock, :search_messages, fn _ -> nil end)
 
       :ok
     end
@@ -57,7 +63,7 @@ defmodule SecureStorageTest do
 
   describe "get_message/1" do
     setup do
-      expect(Mock, :get_message, fn _ -> {:ok, nil} end)
+      expect(EncryptedMessagesMock, :get_message, fn _ -> {:ok, nil} end)
 
       :ok
     end
@@ -69,7 +75,7 @@ defmodule SecureStorageTest do
 
   describe "delete_message/1" do
     setup do
-      expect(Mock, :delete_message, fn _ -> {:ok, nil} end)
+      expect(EncryptedMessagesMock, :delete_message, fn _ -> {:ok, nil} end)
 
       :ok
     end
@@ -81,7 +87,7 @@ defmodule SecureStorageTest do
 
   describe "list_messages/0" do
     setup do
-      expect(Mock, :list_messages, fn -> [] end)
+      expect(EncryptedMessagesMock, :list_messages, fn -> [] end)
 
       :ok
     end
@@ -93,13 +99,77 @@ defmodule SecureStorageTest do
 
   describe "decrypt_message/2" do
     setup do
-      expect(Mock, :decrypt_message, fn _, _ -> {:ok, nil} end)
+      expect(EncryptedMessagesMock, :decrypt_message, fn _, _ ->
+        {:ok, nil}
+      end)
 
       :ok
     end
 
     test "calls mock function" do
       assert @module.decrypt_message(nil, nil) == {:ok, nil}
+    end
+  end
+
+  describe "insert_new_room/1" do
+    setup do
+      expect(ChatRoomsMock, :insert_new_room, fn _ ->
+        {:ok, nil}
+      end)
+
+      :ok
+    end
+
+    test "calls mock function" do
+      assert @module.insert_new_room(nil) == {:ok, nil}
+    end
+  end
+
+  describe "search_rooms/1" do
+    setup do
+      expect(ChatRoomsMock, :search_rooms, fn _ -> nil end)
+
+      :ok
+    end
+
+    test "calls mock function" do
+      assert @module.search_rooms(nil) == nil
+    end
+  end
+
+  describe "get_room/1" do
+    setup do
+      expect(ChatRoomsMock, :get_room, fn _ -> {:ok, nil} end)
+
+      :ok
+    end
+
+    test "calls mock function" do
+      assert @module.get_room(nil) == {:ok, nil}
+    end
+  end
+
+  describe "delete_room/1" do
+    setup do
+      expect(ChatRoomsMock, :delete_room, fn _ -> {:ok, nil} end)
+
+      :ok
+    end
+
+    test "calls mock function" do
+      assert @module.delete_room(nil) == {:ok, nil}
+    end
+  end
+
+  describe "list_rooms/0" do
+    setup do
+      expect(ChatRoomsMock, :list_rooms, fn -> [] end)
+
+      :ok
+    end
+
+    test "calls mock function" do
+      assert @module.list_rooms() == []
     end
   end
 end

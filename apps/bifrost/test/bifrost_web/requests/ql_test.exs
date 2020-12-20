@@ -3,7 +3,7 @@ defmodule BifrostWeb.QLTest do
 
   import Mox
 
-  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.EncryptedMessagesMock, as: Mock
   alias SecureStorage.Schema.EncryptedMessage
 
   @graphql_path "/api/graphql"

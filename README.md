@@ -146,3 +146,4 @@ is already shared.
 - [ ] Add `dialyzer`
 - [ ] Add `inch-ci`
 - [ ] Clean up errors/messages using error helpers/gettext
+- [ ] Revisit message state, fix sweeper

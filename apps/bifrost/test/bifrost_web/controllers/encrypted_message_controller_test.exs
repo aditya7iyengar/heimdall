@@ -2,7 +2,7 @@ defmodule BifrostWeb.EncryptedMessageControllerTest do
   use BifrostWeb.ConnCase
 
   import Mox
-  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.EncryptedMessagesMock, as: Mock
   alias SecureStorage.Schema.EncryptedMessage
 
   @valid_encrypted_message_params %{

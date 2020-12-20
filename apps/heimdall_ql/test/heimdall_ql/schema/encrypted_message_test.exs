@@ -3,7 +3,7 @@ defmodule HeimdallQL.Schema.LoanTypesTest do
 
   import Mox
 
-  alias EncryptedMessagesMock, as: Mock
+  alias SecureStorage.EncryptedMessagesMock, as: Mock
   alias SecureStorage.Schema.EncryptedMessage
 
   describe "encrypted_messages" do
